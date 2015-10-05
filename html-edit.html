@@ -380,12 +380,23 @@
       }
     },
     _getSuggestedTags: function(tags,filter) {
+      function fillOut(tags) {
+        var output = [];
+        for (var i= 0; i < tags.length; ++i) {
+          if (!tags[i].hasOwnProperty("code")) {
+            tags[i].code = "<" + tags[i].tag + "></" + tags[i].tag + ">";
+            tags[i].move = ("<" + tags[i].tag + ">").length;
+          }
+          output.push(tags[i])
+        }
+        return output;
+      }
       if (filter != "") {
         return tags.filter(function(item) {
           return item.tag.indexOf(filter) !== -1;
         });
       } else {        
-        return tags;
+        return fillOut(tags);
       }
     },
     addTag: function() {
@@ -394,9 +405,6 @@
       var tag = e.options[index].value;
       e.selectedOptions[0].selected = false;
       if (tag) {
-        if (tag.indexOf('</') == -1) {
-          tag = "<" + tag + "></" + tag + ">";
-        }
         var t = this.$$('textarea');
         var goBack = 0;
         var reach = 0;
