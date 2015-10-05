@@ -1,6 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <!--
-`<html-edit value="{{html}}" label="html code">` help you edit html.
+`<html-edit>` help you edit html.
 @demo demo.html
 -->
 
@@ -97,6 +97,8 @@
             re.lastIndex++;
           }
           this.filter = m[1];
+        } else {
+          this.filter = "";
         }
       }
     },
@@ -111,7 +113,8 @@
     },
     addTag: function() {
       var e = this.$$('select');
-      var tag = e.options[e.selectedIndex].value;
+      var index = e.selectedIndex;
+      var tag = e.options[index].value;
       e.selectedOptions[0].selected = false;
       if (tag) {
         var t = this.$$('textarea');
@@ -123,7 +126,7 @@
         if ( t.value.substring(t.selectionStart,t.selectionStart+1) == ">"){
           reach = 1;
         }
-        TextEvent(t, t.selectionStart-goBack, t.selectionStart+reach, tag, e.options[e.selectedIndex].title*1);
+        TextEvent(t, t.selectionStart-goBack, t.selectionStart+reach, tag, e.options[index].title*1);
       }
     }
   });
