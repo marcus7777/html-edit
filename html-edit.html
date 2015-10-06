@@ -11,7 +11,7 @@
       <textarea style="width:100%" on-blur="updateFilter" onkeyup="takekeyup(this)" label="{{label}}" value="{{value::change}}"></textarea>
       <select on-blur="addTag" multiple>
         <template is="dom-repeat" items="{{suggestedTags}}">
-          <option value="{{item.code}}" title="{{item.move}}">{{item.tag}}</option>
+          <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
         </template>
       </select>
     </div>
@@ -426,7 +426,7 @@
         if ( t.value.substring(t.selectionStart,t.selectionStart+1) == ">"){
           reach = 1;
         }
-        TextEvent(t, t.selectionStart-goBack, t.selectionStart+reach, tag, e.options[index].title*1);
+        TextEvent(t, t.selectionStart-goBack, t.selectionStart+reach, tag, e.options[index].move);
       }
     }
   });
