@@ -420,34 +420,34 @@
             move = fromArray;
           }
           var moveTo = (start*1) + move;
-          e.setSelectionRange(moveTo, moveTo+select);
-          e.preventDefault();
+          e.target.setSelectionRange(moveTo, moveTo+select);
+          e.target.preventDefault();
         }
       }
-      if (!e.lastValue) {
-        if (!e.value) {
-          e.lastValue = "";
+      if (!e.target.lastValue) {
+        if (!e.target.value) {
+          e.target.lastValue = "";
         } else {
-          e.lastValue = e.value;
+          e.target.lastValue = e.target.value;
         }
       }
-      var last = e.lastValue, current = e.value;
+      var last = e.target.lastValue, current = e.target.value;
       // Added chars
       if (current.length > last.length) {
         var start = e.selectionStart, added = current.substr(start - 1, 1);
         if (added == "<") {
-          TextEvent(e, start - 1, start, '<>', 1);
+          TextEvent(e.target, start - 1, start, '<>', 1);
         } else if (added == '"') {
-          TextEvent(e, start - 1, start, '""', 1);   
+          TextEvent(e.target, start - 1, start, '""', 1);   
         } else if (added == "'") {
-          TextEvent(e, start - 1, start, "''", 1);
+          TextEvent(e.target, start - 1, start, "''", 1);
         } else if (added == '{') {
-          TextEvent(e, start - 1, start, '{}', 1);
+          TextEvent(e.target, start - 1, start, '{}', 1);
         } else if (added == '[') {
-          TextEvent(e, start - 1, start, '[]', 1);
+          TextEvent(e.target, start - 1, start, '[]', 1);
         }
       }
-      e.lastValue = e.value;
+      e.target.lastValue = e.target.value;
     }
   });
 </script>
