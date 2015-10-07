@@ -62,17 +62,17 @@
  */
       tags: {
         value:[
-          {code:'<template is="dom-if" if="{{test}}">\n  \n</template>',tag:"dom-if",move:[28,4]},
-          {code:'<template is="dom-repeat" items="{{itens}}">\n  \n</template>',tag:"dom-repeat",move:[35,5]},
-          {code:"<paper-input label='label' value='{{text}}'></paper-input>",tag:"paper-input",move:[36,4]},
-          {tag:"h1"},{tag:"h2"},{tag:"h3"},{tag:"h4"},{tag:"h5"},{tag:"h6"},{tag:"p"},{tag:"i"},
-          {code:'<a href="https://github.com"></a>',tag:"a",move:[[9,18],[2,0],[4,0]]},
-          {code:"\n<ul>\n  <li></li>\n</ul>\n",tag:"ul",move:11},
-          {tag:"blockquote"},
-          {code:"\n<hr />\n",tag:"hr",move:8},
-          {code:'<img src="" />\n',tag:"img",move:10},
-          {tag:"div"},
-          {tag:"account-summaries-import"},
+{code:'<template is="dom-if" if="{{test}}">\n  \n</template>',tag:"dom-if",move:[28,4]},
+{code:'<template is="dom-repeat" items="{{itens}}">\n  \n</template>',tag:"dom-repeat",move:[35,5]},
+{code:"<paper-input label='label' value='{{text}}'></paper-input>",tag:"paper-input",move:[36,4]},
+{tag:"h1"},{tag:"h2"},{tag:"h3"},{tag:"h4"},{tag:"h5"},{tag:"h6"},{tag:"p"},{tag:"i"},
+{code:'<a href="https://github.com"></a>',tag:"a",move:[[9,18],[2,0],[4,0]]},
+{code:"\n<ul>\n  <li></li>\n</ul>\n",tag:"ul",move:11},
+{tag:"blockquote"},
+{code:"\n<hr />\n",tag:"hr",move:8},
+{code:'<img src="" />\n',tag:"img",move:10},
+{tag:"div"},
+{tag:"account-summaries-import"},
 {tag:"accounting-element"},
 {tag:"accounting-import"},
 {tag:"all-imports"},
@@ -354,6 +354,7 @@
       }
     },
     updateFilter : function () {
+      tabStops = [];
       var re = /<([-\w]*)$/g;
       var t = this.$$('textarea');
       var start = t.selectionStart;
