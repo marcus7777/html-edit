@@ -77,25 +77,24 @@
       label: String,
       suggestedTags: {computed:"_getSuggestedTags(tags,filter)"},
       filter:{value:""},
+/*  `tags` is a Array of Objects
+ *  Objects
+ *    `tag`  the only one needed
+ *    `code` the snippets
+ *    `move` moves the curser to a good place a selects the text than sets the tab stops
+ */
       tags: {
         value:[
-          {code:'<template is="dom-if" if="{{}}">\n  \n</template>',tag:"dom-if",move:28},
-          {code:'<template is="dom-repeat" items="{{}}">\n  \n</template>',tag:"dom-repeat",move:35},
-          {code:"<paper-input label='label' value='{{}}'></paper-input>",tag:"paper-input",move:36},
-          {code:"<h1></h1>\n",tag:"h1",move:4},
-          {code:"<h2></h2>\n",tag:"h2",move:4},
-          {code:"<h3></h3>\n",tag:"h3",move:4},
-          {code:"<h4></h4>\n",tag:"h4",move:4},
-          {code:"<h5></h5>\n",tag:"h5",move:4},
-          {code:"<h6></h6>\n",tag:"h6",move:4},
-          {code:"<p></p>\n",tag:"p",move:3},
-          {code:"<i></i>",tag:"i",move:3},
-          {code:'<a href=""></a>',tag:"a",move:9},
+          {code:'<template is="dom-if" if="{{test}}">\n  \n</template>',tag:"dom-if",move:[28,4]},
+          {code:'<template is="dom-repeat" items="{{itens}}">\n  \n</template>',tag:"dom-repeat",move:[35,5]},
+          {code:"<paper-input label='label' value='{{text}}'></paper-input>",tag:"paper-input",move:[36,4]},
+          {tag:"h1"},{tag:"h2"},{tag:"h3"},{tag:"h4"},{tag:"h5"},{tag:"h6"},{tag:"p"},{tag:"i"},
+          {code:'<a href="https://github.com"></a>',tag:"a",move:[[9,18],[2,0],[4,0]]},
           {code:"\n<ul>\n  <li></li>\n</ul>\n",tag:"ul",move:11},
-          {code:"<blockquote></blockquote>",tag:"blockquote",move:12},
+          {tag:"blockquote"},
           {code:"\n<hr />\n",tag:"hr",move:8},
           {code:'<img src="" />\n',tag:"img",move:10},
-          {code:"<div>\n</div>\n",tag:"div",move:7},
+          {tag:"div"},
           {tag:"account-summaries-import"},
 {tag:"accounting-element"},
 {tag:"accounting-import"},
@@ -311,7 +310,11 @@
 {tag:"paper-styles"},
 {tag:"paper-styles-classes"},
 {tag:"paper-tab"},
-{tag:"paper-tabs",code:"<paper-tabs>\n  <paper-tab>a</paper-tab>\n  <paper-tab>b</paper-tab>\n  <paper-tab>c</paper-tab>\n</paper-tabs>",move:[[26,1],[26,1],27]},
+{
+  tag:"paper-tabs",
+  code:"<paper-tabs>\n  <paper-tab>a</paper-tab>\n  <paper-tab>b</paper-tab>\n  <paper-tab>c</paper-tab>\n</paper-tabs>",
+  move:[[26,1],[26,1],[26,1],[27,0]]
+},
 {tag:"paper-tabs-icons"},
 {tag:"paper-textarea"},
 {tag:"paper-toast"},
@@ -397,7 +400,7 @@
         for (var i= 0; i < tags.length; ++i) {
           if (!tags[i].hasOwnProperty("code")) {
             tags[i].code = "<" + tags[i].tag + "></" + tags[i].tag + ">";
-            tags[i].move = ("<" + tags[i].tag + ">").length;
+            tags[i].move = [[("<" + tags[i].tag + ">").length,0],[("</" + tags[i].tag + ">").length,0]];
           }
           output.push(tags[i])
         }
