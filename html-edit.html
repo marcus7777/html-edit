@@ -423,6 +423,8 @@
           e.target.setSelectionRange(moveTo, moveTo+select);
           e.target.preventDefault();
         }
+      } else if (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
+        tabStops=[];
       }
       if (!e.target.lastValue) {
         if (!e.target.value) {
