@@ -8,7 +8,7 @@
   <template>
     <div>
       <h3>{{label}}</h3>
-      <textarea style="width:100%" on-blur="updateFilter" onkeydown="takekeydown(this)" label="{{label}}" value="{{value::change}}"></textarea>
+      <textarea style="width:100%" on-blur="updateFilter" on-keydown="takekeydown" label="{{label}}" value="{{value::change}}"></textarea>
       <select on-blur="addTag" multiple>
         <template is="dom-repeat" items="{{suggestedTags}}">
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
@@ -44,46 +44,7 @@
     var moveTo = (start*1) + move;
     editor.setSelectionRange(moveTo, moveTo+select);
   }
-  function takekeydown (e) {
-    if(e.keyCode === 9) { // tab was pressed
-      if (tabStops[0]) {
-        fromArray = tabStops.pop();
-        if (Array.isArray(fromArray)) {
-          move = (fromArray[0])*1;
-          select = (fromArray[1])*1;
-        } else if ((fromArray)*1>0) {
-          move = fromArray;
-        }
-        var moveTo = (start*1) + move;
-        e.setSelectionRange(moveTo, moveTo+select);
-        return false;
-      }
-    }
-    if (!e.lastValue) {
-      if (!e.value) {
-        e.lastValue = "";
-      } else {
-        e.lastValue = e.value;
-      }
-    }
-    var last = e.lastValue, current = e.value;
-    // Added chars
-    if (current.length > last.length) {
-      var start = e.selectionStart, added = current.substr(start - 1, 1);
-      if (added == "<") {
-        TextEvent(e, start - 1, start, '<>', 1);
-      } else if (added == '"') {
-        TextEvent(e, start - 1, start, '""', 1);   
-      } else if (added == "'") {
-        TextEvent(e, start - 1, start, "''", 1);
-      } else if (added == '{') {
-        TextEvent(e, start - 1, start, '{}', 1);
-      } else if (added == '[') {
-        TextEvent(e, start - 1, start, '[]', 1);
-      }
-    }
-    e.lastValue = e.value;
-  };
+  
   Polymer({
     is: "html-edit",
     properties: {
@@ -94,7 +55,9 @@
 /*  `tags` is a Array of Objects
  *  Objects
  *    `tag`  the only one needed
+ *
  *    `code` the snippets
+ *
  *    `move` moves the curser to a good place a selects the text than sets the tab stops
  */
       tags: {
@@ -414,7 +377,7 @@
         for (var i= 0; i < tags.length; ++i) {
           if (!tags[i].hasOwnProperty("code")) {
             tags[i].code = "<" + tags[i].tag + "></" + tags[i].tag + ">";
-            tags[i].move = [[("<" + tags[i].tag + ">").length,0],[("</" + tags[i].tag + ">").length,0]];
+            tags[i].move = [[("<" + tags[i].tag + ">").length-1,0],[("</" + tags[i].tag + ">").length-1,0]];
           }
           output.push(tags[i])
         }
