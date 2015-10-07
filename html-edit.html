@@ -395,19 +395,21 @@
     addTag: function() {
       var e = this.$$('select');
       var index = e.selectedIndex;
-      var tag = e.options[index].value;
-      e.selectedOptions[0].selected = false;
-      if (tag) {
-        var t = this.$$('textarea');
-        var goBack = 0;
-        var reach = 0;
-        if (this.filter.length > 0){
-          goBack = (this.filter.length +1);
+      if (index !== -1) {
+        var tag = e.options[index].value;
+        e.selectedOptions[0].selected = false;
+        if (tag) {
+          var t = this.$$('textarea');
+          var goBack = 0;
+          var reach = 0;
+          if (this.filter.length > 0){
+            goBack = (this.filter.length +1);
+          }
+          if ( t.value.substring(t.selectionStart,t.selectionStart+1) == ">"){
+            reach = 1;
+          }
+          TextEvent(t, t.selectionStart-goBack, t.selectionStart+reach, tag, e.options[index].move);
         }
-        if ( t.value.substring(t.selectionStart,t.selectionStart+1) == ">"){
-          reach = 1;
-        }
-        TextEvent(t, t.selectionStart-goBack, t.selectionStart+reach, tag, e.options[index].move);
       }
     },
     takekeydown: function  (e) {
