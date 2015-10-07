@@ -51,11 +51,12 @@
         if (Array.isArray(fromArray)) {
           move = (fromArray[0])*1;
           select = (fromArray[1])*1;
-        } else if ((fromArray)*1 > 0) {
+        } else if ((fromArray)*1>0) {
           move = fromArray;
         }
         var moveTo = (start*1) + move;
         e.setSelectionRange(moveTo, moveTo+select);
+        return false;
       }
     }
     if (!e.lastValue) {
