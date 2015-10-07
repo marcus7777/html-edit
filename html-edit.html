@@ -8,7 +8,7 @@
   <template>
     <div>
       <h3>{{label}}</h3>
-      <textarea style="width:100%" on-blur="updateFilter" onkeyup="takekeyup(this)" label="{{label}}" value="{{value::change}}"></textarea>
+      <textarea style="width:100%" on-blur="updateFilter" onkeydown="takekeydown(this)" label="{{label}}" value="{{value::change}}"></textarea>
       <select on-blur="addTag" multiple>
         <template is="dom-repeat" items="{{suggestedTags}}">
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
@@ -44,7 +44,20 @@
     var moveTo = (start*1) + move;
     editor.setSelectionRange(moveTo, moveTo+select);
   }
-  function takekeyup (e) {
+  function takekeydown (e) {
+    if(e.keyCode === 9) { // tab was pressed
+      if (tabStops[0]) {
+        fromArray = tabStops.pop();
+        if (Array.isArray(fromArray)) {
+          move = (fromArray[0])*1;
+          select = (fromArray[1])*1;
+        } else if ((fromArray)*1 > 0) {
+          move = fromArray;
+        }
+        var moveTo = (start*1) + move;
+        e.setSelectionRange(moveTo, moveTo+select);
+      }
+    }
     if (!e.lastValue) {
       if (!e.value) {
         e.lastValue = "";
