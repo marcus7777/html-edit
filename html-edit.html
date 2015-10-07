@@ -408,6 +408,46 @@
         }
         TextEvent(t, t.selectionStart-goBack, t.selectionStart+reach, tag, e.options[index].move);
       }
+    },
+    takekeydown: function  (e) {
+      if(e.keyCode === 9) { // tab was pressed
+        if (tabStops[0]) {
+          fromArray = tabStops.pop();
+          if (Array.isArray(fromArray)) {
+            move = (fromArray[0])*1;
+            select = (fromArray[1])*1;
+          } else if ((fromArray)*1 > 0) {
+            move = fromArray;
+          }
+          var moveTo = (start*1) + move;
+          e.setSelectionRange(moveTo, moveTo+select);
+          e.preventDefault();
+        }
+      }
+      if (!e.lastValue) {
+        if (!e.value) {
+          e.lastValue = "";
+        } else {
+          e.lastValue = e.value;
+        }
+      }
+      var last = e.lastValue, current = e.value;
+      // Added chars
+      if (current.length > last.length) {
+        var start = e.selectionStart, added = current.substr(start - 1, 1);
+        if (added == "<") {
+          TextEvent(e, start - 1, start, '<>', 1);
+        } else if (added == '"') {
+          TextEvent(e, start - 1, start, '""', 1);   
+        } else if (added == "'") {
+          TextEvent(e, start - 1, start, "''", 1);
+        } else if (added == '{') {
+          TextEvent(e, start - 1, start, '{}', 1);
+        } else if (added == '[') {
+          TextEvent(e, start - 1, start, '[]', 1);
+        }
+      }
+      e.lastValue = e.value;
     }
   });
 </script>
