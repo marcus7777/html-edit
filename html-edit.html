@@ -381,7 +381,7 @@
         for (var i= 0; i < tags.length; ++i) {
           if (!tags[i].hasOwnProperty("code")) {
             tags[i].code = "<" + tags[i].tag + "></" + tags[i].tag + ">";
-            tags[i].move = [[("<" + tags[i].tag + ">").length-1,0],[("</" + tags[i].tag + ">").length-1,0]];
+            tags[i].move = [[("<" + tags[i].tag + ">").length,0],[("</" + tags[i].tag + ">").length,0]];
           }
           output.push(tags[i])
         }
@@ -435,6 +435,7 @@
         // if => -1 to tabStops[0][0]
         // if <= +1 to tabStops[0][0]
       } 
+    },
     takekey: function  (e) {
       var key = e.keyCode;
       var shifted = e.shiftKey;
