@@ -8,7 +8,7 @@
   <template>
     <div>
       <h3>{{label}}</h3>
-      <textarea style="width:100%" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::change}}"></textarea>
+      <textarea style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::change}}"></textarea>
       <select on-blur="addTag" multiple>
         <template is="dom-repeat" items="{{suggestedTags}}">
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
@@ -415,7 +415,7 @@
         }
       }
     },
-    takekey: function  (e) {
+    keydown: function  (e) {
       key = keyboardMap[e.keyCode];
       if(key=="TAB") { // tab was pressed
         if (tabStops[0]) {
@@ -434,24 +434,24 @@
         tabStops=[];
         // if => -1 to tabStops[0][0]
         // if <= +1 to tabStops[0][0]
-      } else {
-        var key = e.keyCode;
-        var shifted = e.shiftKey;
-        
-        var start = e.target.selectionStart, added = String.fromCharCode((96 <= key && key <= 105)? key-48 : key);
-        if (key == 188) {
-          // added = "<"
-          TextEvent(e.target, start - 1, start, '<>', 1);
-        } else if (added == '2' && shifted) {
-          // added == '"'
-          TextEvent(e.target, start - 1, start, '""', 1);   
-        } else if (added == "'") {
-          TextEvent(e.target, start - 1, start, "''", 1);
-        } else if (added == '{') {
-          TextEvent(e.target, start - 1, start, '{}', 1);
-        } else if (added == '[') {
-          TextEvent(e.target, start - 1, start, '[]', 1);
-        }
+      } 
+    takekey: function  (e) {
+      var key = e.keyCode;
+      var shifted = e.shiftKey;
+      
+      var start = e.target.selectionStart, added = String.fromCharCode((96 <= key && key <= 105)? key-48 : key);
+      if (key == 188) {
+        // added = "<"
+        TextEvent(e.target, start - 1, start, '<>', 1);
+      } else if (added == '2' && shifted) {
+        // added == '"'
+        TextEvent(e.target, start - 1, start, '""', 1);   
+      } else if (added == "'") {
+        TextEvent(e.target, start - 1, start, "''", 1);
+      } else if (added == '{') {
+        TextEvent(e.target, start - 1, start, '{}', 1);
+      } else if (added == '[') {
+        TextEvent(e.target, start - 1, start, '[]', 1);
       }
     }
   });
