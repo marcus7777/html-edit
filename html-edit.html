@@ -419,7 +419,7 @@
       key = keyboardMap[e.keyCode];
       if(key=="TAB") { // tab was pressed
         if (tabStops[0]) {
-          fromArray = tabStops.pop();
+          fromArray = tabStops.shift();
           if (Array.isArray(fromArray)) {
             move = (fromArray[0])*1;
             select = (fromArray[1])*1;
@@ -428,7 +428,7 @@
           }
           var moveTo = (e.target.selectionStart*1) + move;
           e.target.setSelectionRange(moveTo, moveTo+select);
-          e.target.preventDefault();
+          e.preventDefault();
         }
       } else if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
         tabStops=[];
