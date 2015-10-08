@@ -32,7 +32,7 @@
     editor.setSelectionRange(start, end);
     editor.dispatchEvent(e);
     if (Array.isArray(move)) {
-      fromArray = move.pop();
+      fromArray = move.shift();
       tabStops = move;
     }
     if (Array.isArray(fromArray)) {
@@ -416,7 +416,7 @@
       }
     },
     takekey: function  (e) {
-      key = keyboardMap[keyCodes];
+      key = keyboardMap[e.keyCode];
       if(key=="TAB") { // tab was pressed
         if (tabStops[0]) {
           fromArray = tabStops.pop();
