@@ -293,7 +293,7 @@
 {
   tag:"paper-tabs",
   code:"<paper-tabs>\n  <paper-tab>a</paper-tab>\n  <paper-tab>b</paper-tab>\n  <paper-tab>c</paper-tab>\n</paper-tabs>",
-  move:[[26,1],[26,1],[26,1],[27,0]]
+  move:[[26,1],[27,1],[27,1],[27,0]]
 },
 {tag:"paper-tabs-icons"},
 {tag:"paper-textarea"},
@@ -439,18 +439,18 @@
     takekey: function  (e) {
       var key = e.keyCode;
       
-      var start = e.target.selectionStart, added = String.fromCharCode((96 <= key && key <= 105)? key-48 : key);
-      if (added = "<") {
-        TextEvent(e.target, start - 1, start, '<>', 1);
-      } else if (added == '"') {
-        TextEvent(e.target, start - 1, start, '""', 1);   
-      } else if (added == "'") {
-        TextEvent(e.target, start - 1, start, "''", 1);
-      } else if (added == '{') {
-        TextEvent(e.target, start - 1, start, '{}', 1);
-      } else if (added == '[') {
-        TextEvent(e.target, start - 1, start, '[]', 1);
-      }
+//      var start = e.target.selectionStart, added = String.fromCharCode((96 <= key && key <= 105)? key-48 : key);
+//      if (added = "<") {
+//        TextEvent(e.target, start - 1, start, '<>', 1);
+//      } else if (added == '"') {
+//        TextEvent(e.target, start - 1, start, '""', 1);   
+//      } else if (added == "'") {
+//        TextEvent(e.target, start - 1, start, "''", 1);
+//      } else if (added == '{') {
+//        TextEvent(e.target, start - 1, start, '{}', 1);
+//      } else if (added == '[') {
+//        TextEvent(e.target, start - 1, start, '[]', 1);
+//      }
     }
   });
 </script>
