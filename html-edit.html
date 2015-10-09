@@ -437,7 +437,7 @@
           } else if ((fromArray)*1 > 0) {
             move = fromArray;
           }
-          var moveTo = (e.target.selectionStart*1) + move;
+          var moveTo = (e.target.selectionEnd*1) + move;
           e.target.setSelectionRange(moveTo, moveTo+select);
           e.preventDefault();
         }
