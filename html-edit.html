@@ -67,6 +67,10 @@
 {code:'<template is="dom-if" if="{{test}}">\n  \n</template>',tag:"dom-if",move:[28,4]},
 {code:'<template is="dom-repeat" items="{{itens}}">\n  \n</template>',tag:"dom-repeat",move:[35,5]},
 {code:"<paper-input label='label' value='{{text}}'></paper-input>",tag:"paper-input",move:[36,4]},
+{
+  tag:"dom-else", 
+  code:['<template is="dom-if" if="{{','test','}}">\n  ','Stuff','/n  <template is="dom-else">\n    ','More stuff','\n  </template>\n</template>']}
+}, 
 {tag:"h1"},{tag:"h2"},{tag:"h3"},{tag:"h4"},{tag:"h5"},{tag:"h6"},{tag:"p"},{tag:"i"},
 {code:'<a href="https://github.com"></a>',tag:"a",move:[[9,18],[2,0],[4,0]]},
 {code:"\n<ul>\n  <li></li>\n</ul>\n",tag:"ul",move:11},
@@ -88,24 +92,20 @@
 {tag:"iron-a11y-keys"},
 {tag:"commits-element"},
 {tag:"commonmark-editor"},
-{tag:"commonmark-editor-import"},
 {tag:"communication-icons"},
 {tag:"communication-icons"},
 {tag:"cosmoz-page-route"},
 {tag:"cosmoz-page-router"},
 {tag:"date-input"},
 {tag:"date-validator"},
-{tag:"default-theme"},
 {tag:"demo-element"},
 {tag:"demo-pages"},
 {tag:"detect-import-node-bug"},
 {tag:"device-icons"},
 {tag:"device-icons"},
-{tag:"dom-else"},
 {tag:"edit-in-jsbin"},
 {tag:"editor-icons"},
 {tag:"editor-icons"},
-{tag:"element-load"},
 {tag:"excess-route"},
 {tag:"excess-route-manager"},
 {tag:"excess-router"},
@@ -380,8 +380,17 @@
         var output = [];
         for (var i= 0; i < tags.length; ++i) {
           if (!tags[i].hasOwnProperty("code")) {
-            tags[i].code = "<" + tags[i].tag + "></" + tags[i].tag + ">";
-            tags[i].move = [[("<" + tags[i].tag + ">").length,0],[("</" + tags[i].tag + ">").length,0]];
+            tags[i].code = ["<" + tags[i].tag + ">","","</" + tags[i].tag + ">"];
+          }
+          if (Array.isArray(tags[i].code)) {
+            tags[i].move = [];
+            if (tags[i].code.length % 2) {
+              tags[i].code.push("");
+            }
+            for (var m= 0; m < tags[i].code.length; m=m+2) {
+              tags[i].move.push([tags[i].code[m].length,[tags[i].code[m+1].length])
+            }
+            tags[i].code = tags[i].code.join('');
           }
           output.push(tags[i])
         }
