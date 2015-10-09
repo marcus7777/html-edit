@@ -58,25 +58,24 @@
  *  Objects
  *    `tag`  the only one needed
  *
- *    `code` the snippets
+ *    `code` the snippets 
  *
- *    `move` moves the curser to a good place a selects the text than sets the tab stops
  */
       tags: {
         value:[
-{code:'<template is="dom-if" if="{{test}}">\n  \n</template>',tag:"dom-if",move:[28,4]},
-{code:'<template is="dom-repeat" items="{{itens}}">\n  \n</template>',tag:"dom-repeat",move:[35,5]},
-{code:"<paper-input label='label' value='{{text}}'></paper-input>",tag:"paper-input",move:[36,4]},
+{code:['<template is="dom-if" if="{{','test','}}">\n  ','','\n</template>'],tag:"dom-if"},
+{code:['<template is="dom-repeat" items="{{','items','}}">\n  ','','\n</template>'],tag:"dom-repeat"},
+{code:["<paper-input label='","label","' value='{{","text",""}}'></paper-input>"],tag:"paper-input"},
 {
   tag:"dom-else", 
-  code:['<template is="dom-if" if="{{','test','}}">\n  ','Stuff','/n  <template is="dom-else">\n    ','More stuff','\n  </template>\n</template>']
+  code:['<template is="dom-if" if="{{','test','}}">\n  ','Stuff','\n  <template is="dom-else">\n    ','More stuff','\n  </template>\n</template>']
 }, 
 {tag:"h1"},{tag:"h2"},{tag:"h3"},{tag:"h4"},{tag:"h5"},{tag:"h6"},{tag:"p"},{tag:"i"},
-{code:'<a href="https://github.com"></a>',tag:"a",move:[[9,18],[2,0],[4,0]]},
+{code:'<a href="','https://github.com','" title="','github','">','link test on page','</a>',tag:"a"},
 {code:"\n<ul>\n  <li></li>\n</ul>\n",tag:"ul",move:11},
 {tag:"blockquote"},
 {code:"\n<hr />\n",tag:"hr",move:8},
-{code:'<img src="" />\n',tag:"img",move:10},
+{code:['<img src="','','" title="','','" />\n'],tag:"img"},
 {tag:"div"},
 {tag:"account-summaries-import"},
 {tag:"accounting-element"},
