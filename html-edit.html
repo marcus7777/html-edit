@@ -8,7 +8,7 @@
   <template>
     <div>
       <h3>{{label}}</h3>
-      <textarea style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::change}}"></textarea>
+      <textarea rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::change}}"></textarea>
       <select on-blur="addTag" multiple>
         <template is="dom-repeat" items="{{suggestedTags}}">
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
