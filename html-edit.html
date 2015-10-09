@@ -388,7 +388,10 @@
               tags[i].code.push("");
             }
             for (var m= 0; m < tags[i].code.length; m=m+2) {
-              tags[i].move.push([tags[i].code[m].length,[tags[i].code[m+1].length])
+              tags[i].move.push([
+                [tags[i].code[m].length,
+                [tags[i].code[m+1].length
+              ]);
             }
             tags[i].code = tags[i].code.join('');
           }
