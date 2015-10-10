@@ -8,18 +8,19 @@
   <template>
     <div>
       <h3>{{label}}</h3>
-      <textarea rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::change}}"></textarea>
-      <select on-blur="addTag" multiple>
+      
+      <textarea rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::input}}"></textarea>
+      <select style="width:100%"  on-blur="addTag" multiple>
         <template is="dom-repeat" items="{{suggestedTags}}">
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
         </template>
       </select>
     </div>
+    <template is="dom-if" if="{{log}}">{{chrInToTab}}</template>
   </template>
 </dom-module>
 <script>
 var tabStops = []
-
 function TextEvent (editor, start, end, text, move) {
   var fromArray = null
   var select = 0
@@ -44,6 +45,7 @@ function TextEvent (editor, start, end, text, move) {
   }
   var moveTo = (start * 1) + move
   editor.setSelectionRange(moveTo, moveTo + select)
+
 }
 // names of known key codes (0-255)
 var keyboardMap = ['', '', '', 'CANCEL', '', '', 'HELP', '', 'BACK_SPACE', 'TAB', '', '', 'CLEAR', 'ENTER', 'RETURN', '', 'SHIFT', 'CONTROL', 'ALT', 'PAUSE', 'CAPS_LOCK', 'KANA', 'EISU', 'JUNJA', 'FINAL', 'HANJA', '', 'ESCAPE', 'CONVERT', 'NONCONVERT', 'ACCEPT', 'MODECHANGE', 'SPACE', 'PAGE_UP', 'PAGE_DOWN', 'END', 'HOME', 'LEFT', 'UP', 'RIGHT', 'DOWN', 'SELECT', 'PRINT', 'EXECUTE', 'PRINTSCREEN', 'INSERT', 'DELETE', '', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'COLON', 'SEMICOLON', 'LESS_THAN', 'EQUALS', 'GREATER_THAN', 'QUESTION_MARK', 'AT', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'WIN', '', 'CONTEXT_MENU', '', 'SLEEP', 'NUMPAD0', 'NUMPAD1', 'NUMPAD2', 'NUMPAD3', 'NUMPAD4', 'NUMPAD5', 'NUMPAD6', 'NUMPAD7', 'NUMPAD8', 'NUMPAD9', 'MULTIPLY', 'ADD', 'SEPARATOR', 'SUBTRACT', 'DECIMAL', 'DIVIDE', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F16', 'F17', 'F18', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', '', '', '', '', '', '', '', '', 'NUM_LOCK', 'SCROLL_LOCK', 'WIN_OEM_FJ_JISHO', 'WIN_OEM_FJ_MASSHOU', 'WIN_OEM_FJ_TOUROKU', 'WIN_OEM_FJ_LOYA', 'WIN_OEM_FJ_ROYA', '', '', '', '', '', '', '', '', '', 'CIRCUMFLEX', 'EXCLAMATION', 'DOUBLE_QUOTE', 'HASH', 'DOLLAR', 'PERCENT', 'AMPERSAND', 'UNDERSCORE', 'OPEN_PAREN', 'CLOSE_PAREN', 'ASTERISK', 'PLUS', 'PIPE', 'HYPHEN_MINUS', 'OPEN_CURLY_BRACKET', 'CLOSE_CURLY_BRACKET', 'TILDE', '', '', '', '', 'VOLUME_MUTE', 'VOLUME_DOWN', 'VOLUME_UP', '', '', 'SEMICOLON', 'EQUALS', 'COMMA', 'MINUS', 'PERIOD', 'SLASH', 'BACK_QUOTE', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'OPEN_BRACKET', 'BACK_SLASH', 'CLOSE_BRACKET', 'QUOTE', '', 'META', 'ALTGR', '', 'WIN_ICO_HELP', 'WIN_ICO_00', '', 'WIN_ICO_CLEAR', '', '', 'WIN_OEM_RESET', 'WIN_OEM_JUMP', 'WIN_OEM_PA1', 'WIN_OEM_PA2', 'WIN_OEM_PA3', 'WIN_OEM_WSCTRL', 'WIN_OEM_CUSEL', 'WIN_OEM_ATTN', 'WIN_OEM_FINISH', 'WIN_OEM_COPY', 'WIN_OEM_AUTO', 'WIN_OEM_ENLW', 'WIN_OEM_BACKTAB', 'ATTN', 'CRSEL', 'EXSEL', 'EREOF', 'PLAY', 'ZOOM', '', 'PA1', 'WIN_OEM_CLEAR', '']
@@ -53,6 +55,7 @@ Polymer({
   properties: {
     value: {type: String, notify: true},
     label: String,
+    code: {type:Boolean,value:false},
     suggestedTags: {computed: '_getSuggestedTags(tags,filter)'},
     filter: {value: ''},
     /*  `tags` is a Array of Objects
@@ -422,6 +425,8 @@ Polymer({
         if (t.value.substring(t.selectionStart, t.selectionStart + 1) === '>') {
           reach = 1
         }
+        this.chrInToTab = 0
+        
         TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag, e.options[index].move)
       }
     }
@@ -431,7 +436,11 @@ Polymer({
     if (tabStops[0]) {
       var move = 0
       var select = 0
-      if (key === 'TAB') { 
+      if (key.length === 1) {
+        this.chrInToTab++
+      } 
+      if (key === 'TAB' || (key === 'SPACE' && this.chrInToTab === 0)) { 
+        this.chrInToTab = 0
         var fromArray = tabStops.shift()
         if (Array.isArray(fromArray)) {
           move = (fromArray[0]) * 1
@@ -444,12 +453,16 @@ Polymer({
         e.preventDefault()
       } else if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
         tabStops = []
+        this.chrInToTab = -1
         // if => -1 to tabStops[0][0]
         // if <= +1 to tabStops[0][0]
       }
-    } 
+    } else {
+      this.chrInToTab = null
+    }
   },
   takekey: function (e) {
+    this.debounce("updateFilter", this.updateFilter, 500)
   //  var key = e.keyCode
 
   //      var start = e.target.selectionStart, added = String.fromCharCode((96 <= key && key <= 105)? key-48 : key)
