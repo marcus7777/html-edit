@@ -428,11 +428,10 @@ Polymer({
   },
   keydown: function (e) {
     var key = keyboardMap[e.keyCode]
-    var move = 0
-    var select = 0
-
-    if (key === 'TAB') { // tab was pressed
-      if (tabStops[0]) {
+    if (tabStops[0]) {
+      var move = 0
+      var select = 0
+      if (key === 'TAB') { 
         var fromArray = tabStops.shift()
         if (Array.isArray(fromArray)) {
           move = (fromArray[0]) * 1
@@ -443,12 +442,12 @@ Polymer({
         var moveTo = (e.target.selectionEnd * 1) + move
         e.target.setSelectionRange(moveTo, moveTo + select)
         e.preventDefault()
+      } else if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
+        tabStops = []
+        // if => -1 to tabStops[0][0]
+        // if <= +1 to tabStops[0][0]
       }
-    } else if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
-      tabStops = []
-    // if => -1 to tabStops[0][0]
-    // if <= +1 to tabStops[0][0]
-    }
+    } 
   },
   takekey: function (e) {
   //  var key = e.keyCode
