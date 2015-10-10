@@ -55,7 +55,7 @@ Polymer({
   properties: {
     value: {type: String, notify: true},
     label: String,
-    code: {type:Boolean,value:false},
+    code: {type: Boolean,value: false},
     suggestedTags: {computed: '_getSuggestedTags(tags,filter)'},
     filter: {value: ''},
     /*  `tags` is a Array of Objects
@@ -79,7 +79,7 @@ Polymer({
         {code: ['\n<ul>\n  <li>', '', '</li>\n</ul>\n'], tag: 'ul'},
         {tag: 'blockquote'},
         {code: ['\n<hr />\n'], tag: 'hr'},
-        {code: ['\n<br />\n'], tag: 'br', discription:"New Line" },
+        {code: ['\n<br />\n'], tag: 'br', discription: 'New Line' },
         {code: ['<img src="', '', '" title="', '', '" />\n'], tag: 'img'},
         {tag: 'div'},
         {tag: 'account-summaries-import'},
@@ -336,7 +336,7 @@ Polymer({
         {tag: 'sc-thumbnail'},
         {tag: 'sc-timeago'},
         {tag: 'sc-upload'},
-        {tag: 'score-element',code: ['<score-element selected="{{', 'value', '}}" start="', '0.5', '" end="', '2.0', '" step="', '0.1', '" decimals="', '1', '"></score-element>']},
+        {tag: 'score-element', code: ['<score-element selected="{{', 'value', '}}" start="', '0.5', '" end="', '2.0', '" step="', '0.1', '" decimals="', '1', '"></score-element>']},
         {tag: 'snap-svg'},
         {tag: 'social-icons'},
         {tag: 'sortable-import'},
@@ -346,7 +346,7 @@ Polymer({
         {tag: 'sweet-material-table-item'},
         {tag: 'sweet-material-table-styles'},
         {tag: 'test-fixture'},
-        {tag: 'textfit-div',code: ['<div class=\"layout horizontal flex wrap\">\n    <div class=\"layout horizontal flex\">\n          <textfit-div horizontal-center vertical-center text=\"', 'Hey!', '\"><\/textfit-div>\n    <\/div>\n    <div class=\"layout horizontal flex\">\n        <textfit-div text=\"', 'Good Evening!', '\"><\/textfit-div>\r\n    <\/div>\r\n<\/div>']}
+        {tag: 'textfit-div', code: ['<div class="layout horizontal flex wrap">\n    <div class="layout horizontal flex">\n          <textfit-div horizontal-center vertical-center text="', 'Hey!', '"><\/textfit-div>\n    <\/div>\n    <div class="layout horizontal flex">\n        <textfit-div text="', 'Good Evening!', '"><\/textfit-div>\r\n    <\/div>\r\n<\/div>']},
         {tag: 'variables-input'},
         {tag: 'variables-list-input'},
         {tag: 'vellum-chip'},
@@ -428,7 +428,7 @@ Polymer({
           reach = 1
         }
         this.chrInToTab = 0
-        
+
         TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag, e.options[index].move)
       }
     }
@@ -440,8 +440,8 @@ Polymer({
       var select = 0
       if (key.length === 1) {
         this.chrInToTab++
-      } 
-      if (key === 'TAB' || (key === 'SPACE' && this.chrInToTab === 0)) { 
+      }
+      if (key === 'TAB' || (key === 'SPACE' && this.chrInToTab === 0)) {
         this.chrInToTab = 0
         var fromArray = tabStops.shift()
         if (Array.isArray(fromArray)) {
@@ -456,16 +456,16 @@ Polymer({
       } else if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
         tabStops = []
         this.chrInToTab = -1
-        // if => -1 to tabStops[0][0]
-        // if <= +1 to tabStops[0][0]
+      // if => -1 to tabStops[0][0]
+      // if <= +1 to tabStops[0][0]
       }
     } else {
       this.chrInToTab = null
     }
   },
   takekey: function (e) {
-    this.debounce("updateFilter", this.updateFilter, 500)
-  //  var key = e.keyCode
+    this.debounce('updateFilter', this.updateFilter, 500)
+    //  var key = e.keyCode
 
   //      var start = e.target.selectionStart, added = String.fromCharCode((96 <= key && key <= 105)? key-48 : key)
   //      if (added = "<") {
