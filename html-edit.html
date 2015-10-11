@@ -21,6 +21,8 @@
 </dom-module>
 <script>
 var tabStops = []
+var onTab = false
+
 function TextEvent (editor, start, end, text, move) {
   var fromArray = null
   var select = 0
@@ -45,17 +47,17 @@ function TextEvent (editor, start, end, text, move) {
   }
   var moveTo = (start * 1) + move
   editor.setSelectionRange(moveTo, moveTo + select)
-
 }
+
 // names of known key codes (0-255)
 var keyboardMap = ['', '', '', 'CANCEL', '', '', 'HELP', '', 'BACK_SPACE', 'TAB', '', '', 'CLEAR', 'ENTER', 'RETURN', '', 'SHIFT', 'CONTROL', 'ALT', 'PAUSE', 'CAPS_LOCK', 'KANA', 'EISU', 'JUNJA', 'FINAL', 'HANJA', '', 'ESCAPE', 'CONVERT', 'NONCONVERT', 'ACCEPT', 'MODECHANGE', 'SPACE', 'PAGE_UP', 'PAGE_DOWN', 'END', 'HOME', 'LEFT', 'UP', 'RIGHT', 'DOWN', 'SELECT', 'PRINT', 'EXECUTE', 'PRINTSCREEN', 'INSERT', 'DELETE', '', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'COLON', 'SEMICOLON', 'LESS_THAN', 'EQUALS', 'GREATER_THAN', 'QUESTION_MARK', 'AT', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'WIN', '', 'CONTEXT_MENU', '', 'SLEEP', 'NUMPAD0', 'NUMPAD1', 'NUMPAD2', 'NUMPAD3', 'NUMPAD4', 'NUMPAD5', 'NUMPAD6', 'NUMPAD7', 'NUMPAD8', 'NUMPAD9', 'MULTIPLY', 'ADD', 'SEPARATOR', 'SUBTRACT', 'DECIMAL', 'DIVIDE', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F16', 'F17', 'F18', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', '', '', '', '', '', '', '', '', 'NUM_LOCK', 'SCROLL_LOCK', 'WIN_OEM_FJ_JISHO', 'WIN_OEM_FJ_MASSHOU', 'WIN_OEM_FJ_TOUROKU', 'WIN_OEM_FJ_LOYA', 'WIN_OEM_FJ_ROYA', '', '', '', '', '', '', '', '', '', 'CIRCUMFLEX', 'EXCLAMATION', 'DOUBLE_QUOTE', 'HASH', 'DOLLAR', 'PERCENT', 'AMPERSAND', 'UNDERSCORE', 'OPEN_PAREN', 'CLOSE_PAREN', 'ASTERISK', 'PLUS', 'PIPE', 'HYPHEN_MINUS', 'OPEN_CURLY_BRACKET', 'CLOSE_CURLY_BRACKET', 'TILDE', '', '', '', '', 'VOLUME_MUTE', 'VOLUME_DOWN', 'VOLUME_UP', '', '', 'SEMICOLON', 'EQUALS', 'COMMA', 'MINUS', 'PERIOD', 'SLASH', 'BACK_QUOTE', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'OPEN_BRACKET', 'BACK_SLASH', 'CLOSE_BRACKET', 'QUOTE', '', 'META', 'ALTGR', '', 'WIN_ICO_HELP', 'WIN_ICO_00', '', 'WIN_ICO_CLEAR', '', '', 'WIN_OEM_RESET', 'WIN_OEM_JUMP', 'WIN_OEM_PA1', 'WIN_OEM_PA2', 'WIN_OEM_PA3', 'WIN_OEM_WSCTRL', 'WIN_OEM_CUSEL', 'WIN_OEM_ATTN', 'WIN_OEM_FINISH', 'WIN_OEM_COPY', 'WIN_OEM_AUTO', 'WIN_OEM_ENLW', 'WIN_OEM_BACKTAB', 'ATTN', 'CRSEL', 'EXSEL', 'EREOF', 'PLAY', 'ZOOM', '', 'PA1', 'WIN_OEM_CLEAR', '']
-
+var Polymer
 Polymer({
   is: 'html-edit',
   properties: {
     value: {type: String, notify: true},
     label: String,
-    code: {type: Boolean,value: false},
+    code: {type: Boolean, value: false},
     suggestedTags: {computed: '_getSuggestedTags(tags,filter)'},
     filter: {value: ''},
     /*  `tags` is a Array of Objects
@@ -76,10 +78,9 @@ Polymer({
         },
         {tag: 'h1'}, {tag: 'h2'}, {tag: 'h3'}, {tag: 'h4'}, {tag: 'h5'}, {tag: 'h6'}, {tag: 'p'}, {tag: 'i'},
         {code: ['<a href="', 'https://github.com', '" title="', 'github', '">', 'link test on page', '</a>'], tag: 'a'},
-        {code: ['\n<ul>\n  <li>', '', '</li>\n</ul>\n'], tag: 'ul'},
+        {code: ['\n<ul>\n  <li>', '', '</li>\n</ul>\n'], tag: 'ul', onTab: function (c) {}},
         {tag: 'blockquote'},
         {code: ['\n<hr />\n'], tag: 'hr'},
-        {code: ['\n<br />\n'], tag: 'br', discription: 'New Line' },
         {code: ['<img src="', '', '" title="', '', '" />\n'], tag: 'img'},
         {tag: 'div'},
         {tag: 'account-summaries-import'},
@@ -346,7 +347,6 @@ Polymer({
         {tag: 'sweet-material-table-item'},
         {tag: 'sweet-material-table-styles'},
         {tag: 'test-fixture'},
-        {tag: 'textfit-div', code: ['<div class="layout horizontal flex wrap">\n    <div class="layout horizontal flex">\n          <textfit-div horizontal-center vertical-center text="', 'Hey!', '"><\/textfit-div>\n    <\/div>\n    <div class="layout horizontal flex">\n        <textfit-div text="', 'Good Evening!', '"><\/textfit-div>\r\n    <\/div>\r\n<\/div>']},
         {tag: 'variables-input'},
         {tag: 'variables-list-input'},
         {tag: 'vellum-chip'},
@@ -361,7 +361,6 @@ Polymer({
     }
   },
   updateFilter: function () {
-    tabStops = []
     var re = /<([-\w]*)$/g
     var t = this.$$('textarea')
     var start = t.selectionStart
@@ -429,19 +428,29 @@ Polymer({
         }
         this.chrInToTab = 0
 
+        if (e.options[index].hasOwnProperty('ontab')) {
+          onTab = e.options[index].ontab
+        } else {
+          onTab = false
+        }
         TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag, e.options[index].move)
       }
     }
   },
   keydown: function (e) {
     var key = keyboardMap[e.keyCode]
+
     if (tabStops[0]) {
-      var move = 0
-      var select = 0
       if (key.length === 1) {
         this.chrInToTab++
       }
+
       if (key === 'TAB' || (key === 'SPACE' && this.chrInToTab === 0)) {
+        var move = 0
+        var select = 0
+        if (onTab) {
+          onTab(this.chrInToTab)
+        }
         this.chrInToTab = 0
         var fromArray = tabStops.shift()
         if (Array.isArray(fromArray)) {
@@ -453,11 +462,19 @@ Polymer({
         var moveTo = (e.target.selectionEnd * 1) + move
         e.target.setSelectionRange(moveTo, moveTo + select)
         e.preventDefault()
-      } else if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40) {
+      } else if (key === 'UP' || key === 'DOWN') {
         tabStops = []
         this.chrInToTab = -1
-      // if => -1 to tabStops[0][0]
-      // if <= +1 to tabStops[0][0]
+      } else if (key === 'LEFT') {
+        if ((e.target.selectionStart - e.target.selectionEnd) === 0) {
+          tabStops[0][0]++
+        } else {
+          tabStops[0][0] = tabStops[0][0] + (e.target.selectionEnd - e.target.selectionStart )
+        }
+      } else if (key === 'RIGHT') {
+        if ((e.target.selectionStart - e.target.selectionEnd) === 0) {
+          tabStops[0][0]--
+        }
       }
     } else {
       this.chrInToTab = null
@@ -465,20 +482,6 @@ Polymer({
   },
   takekey: function (e) {
     this.debounce('updateFilter', this.updateFilter, 500)
-    //  var key = e.keyCode
-
-  //      var start = e.target.selectionStart, added = String.fromCharCode((96 <= key && key <= 105)? key-48 : key)
-  //      if (added = "<") {
-  //        TextEvent(e.target, start - 1, start, '<>', 1)
-  //      } else if (added == '"') {
-  //        TextEvent(e.target, start - 1, start, '""', 1)
-  //      } else if (added == "'") {
-  //        TextEvent(e.target, start - 1, start, "''", 1)
-  //      } else if (added == '{') {
-  //        TextEvent(e.target, start - 1, start, '{}', 1)
-  //      } else if (added == '[') {
-  //        TextEvent(e.target, start - 1, start, '[]', 1)
-  //      }
   }
 })
 </script>
