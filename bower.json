@@ -1,0 +1,13 @@
+{
+  "name": "html-edit",
+  "version": "1.0.0",
+  "description": "html-edit",
+  "main": "html-edit.html",
+  "keywords": [
+    "polymer","web-components"
+  ],
+  "dependencies": {
+    "polymer": "*",
+    "lunr-js": "marcus7777/lunr-js"
+  }
+}
