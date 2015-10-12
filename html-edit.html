@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../lunr-js/lunr-js.html">
 <!--
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 
@@ -8,12 +9,12 @@
 
 <dom-module id="html-edit">
   <template>
+    <lunr-js data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
       <h3>{{label}}</h3>
-      
       <textarea rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::input}}"></textarea>
       <select style="width:100%"  on-blur="addTag" multiple>
-        <template is="dom-repeat" items="{{suggestedTags}}">
+        <template is="dom-repeat" items="{{ac}}">
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
         </template>
       </select>
@@ -60,7 +61,7 @@ Polymer({
     value: {type: String, notify: true},
     label: String,
     code: {type: Boolean, value: false},
-    suggestedTags: {computed: '_getSuggestedTags(tags,filter)'},
+    suggestedTags: {computed: '_getSuggestedTags(tags)'},
     filter: {value: ''},
     /*  `tags` is a Array of Objects
      *  Objects
@@ -380,53 +381,44 @@ Polymer({
       }
     }
   },
-  _getSuggestedTags: function (tags, filter) {
-    function fillOut (tags) {
-      var output = []
-      for (var i = 0; i < tags.length; ++i) {
-        if (!tags[i].hasOwnProperty('code')) {
-          tags[i].code = ['<' + tags[i].tag + '>', '', '</' + tags[i].tag + '>']
-        }
-        
-        if (typeof tags[i].code === "string") {
-          codeArray = tags[i].code.split('"')
-          toggle = true
-          
-          for (var s = 0; s < codeArray.length-1; s = s + 1) {
-            if (toggle) {
-              codeArray[s] = codeArray[s] + '"'
-            } else {
-              codeArray[s] = '"' + codeArray[s] 
-            }
-            toggle = !toggle
-          }
-          tags[i].code = codeArray
-        } 
-        
-        if (Array.isArray(tags[i].code)) {
-          tags[i].move = []
-          if (tags[i].code.length % 2) {
-            tags[i].code.push('')
-          }
-          for (var m = 0; m < tags[i].code.length; m = m + 2) {
-            tags[i].move.push([
-              tags[i].code[m].length,
-              tags[i].code[m + 1].length
-            ])
-          }
-          tags[i].code = tags[i].code.join('')
-        }
-        output.push(tags[i])
+  _getSuggestedTags: function (tags) {
+    var output = []
+    for (var i = 0; i < tags.length; ++i) {
+      if (!tags[i].hasOwnProperty('code')) {
+        tags[i].code = ['<' + tags[i].tag + '>', '', '</' + tags[i].tag + '>']
       }
-      return output
+  
+      if (typeof tags[i].code === "string") {
+        codeArray = tags[i].code.split('"')
+        toggle = true
+
+        for (var s = 0; s < codeArray.length-1; s = s + 1) {
+          if (toggle) {
+            codeArray[s] = codeArray[s] + '"'
+          } else {
+            codeArray[s] = '"' + codeArray[s] 
+          }
+          toggle = !toggle
+        }
+        tags[i].code = codeArray
+      } 
+        
+      if (Array.isArray(tags[i].code)) {
+        tags[i].move = []
+        if (tags[i].code.length % 2) {
+          tags[i].code.push('')
+        }
+        for (var m = 0; m < tags[i].code.length; m = m + 2) {
+          tags[i].move.push([
+            tags[i].code[m].length,
+            tags[i].code[m + 1].length
+          ])
+        }
+        tags[i].code = tags[i].code.join('')
+      }
+      output.push(tags[i])
     }
-    if (filter !== '') {
-      return tags.filter(function (item) {
-        return item.tag.indexOf(filter) !== -1
-      })
-    } else {
-      return fillOut(tags)
-    }
+    return output
   },
   addTag: function () {
     var e = this.$$('select')
