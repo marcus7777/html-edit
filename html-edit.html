@@ -236,7 +236,7 @@ Polymer({
         {tag: 'markdown-edit'},
         {tag: 'marked-element'},
         {tag: 'marked-import'},
-        {tag: 'mediator-data',code:['<mediator-data location=\"', 'https:\/\/mediator-data.firebaseio-demo.com', '\" data=\"{{', 'data', '}}\"></mediator-data>']},
+        {tag: 'mediator-data',code:'<mediator-data location=\"https:\/\/mediator-data.firebaseio-demo.com\" data=\"{{data}}\"></mediator-data>'},
         {tag: 'neon-animatable'},
         {tag: 'neon-animatable-behavior'},
         {tag: 'neon-animated-pages'},
@@ -387,6 +387,22 @@ Polymer({
         if (!tags[i].hasOwnProperty('code')) {
           tags[i].code = ['<' + tags[i].tag + '>', '', '</' + tags[i].tag + '>']
         }
+        
+        if (typeof tags[i].code === "String") {
+          codeArray = tags[i].code.split('"')
+          toggle = true
+          
+          for (var s = 0; s < codeArray.length-1; s = s + 1) {
+            if (toggle) {
+              codeArray[s] = codeArray[s] + '"'
+            } else {
+              codeArray[s] = '"' + codeArray[s] 
+            }
+            toggle = !toggle
+          }
+          tags[i].code = codeArray
+        } 
+        
         if (Array.isArray(tags[i].code)) {
           tags[i].move = []
           if (tags[i].code.length % 2) {
