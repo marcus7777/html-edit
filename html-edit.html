@@ -2,7 +2,6 @@
 <link rel="import" href="../lunr-js/lunr-js.html">
 <!--
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
-
 `<html-edit>` help you edit html.
 @demo demo.html
 -->
@@ -25,7 +24,6 @@
 <script>
 var tabStops = []
 var onTab = false
-
 function TextEvent (editor, start, end, text, move) {
   var fromArray = null
   var select = 0
@@ -51,7 +49,6 @@ function TextEvent (editor, start, end, text, move) {
   var moveTo = (start * 1) + move
   editor.setSelectionRange(moveTo, moveTo + select)
 }
-
 // names of known key codes (0-255)
 var keyboardMap = ['', '', '', 'CANCEL', '', '', 'HELP', '', 'BACK_SPACE', 'TAB', '', '', 'CLEAR', 'ENTER', 'RETURN', '', 'SHIFT', 'CONTROL', 'ALT', 'PAUSE', 'CAPS_LOCK', 'KANA', 'EISU', 'JUNJA', 'FINAL', 'HANJA', '', 'ESCAPE', 'CONVERT', 'NONCONVERT', 'ACCEPT', 'MODECHANGE', 'SPACE', 'PAGE_UP', 'PAGE_DOWN', 'END', 'HOME', 'LEFT', 'UP', 'RIGHT', 'DOWN', 'SELECT', 'PRINT', 'EXECUTE', 'PRINTSCREEN', 'INSERT', 'DELETE', '', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'COLON', 'SEMICOLON', 'LESS_THAN', 'EQUALS', 'GREATER_THAN', 'QUESTION_MARK', 'AT', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'WIN', '', 'CONTEXT_MENU', '', 'SLEEP', 'NUMPAD0', 'NUMPAD1', 'NUMPAD2', 'NUMPAD3', 'NUMPAD4', 'NUMPAD5', 'NUMPAD6', 'NUMPAD7', 'NUMPAD8', 'NUMPAD9', 'MULTIPLY', 'ADD', 'SEPARATOR', 'SUBTRACT', 'DECIMAL', 'DIVIDE', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F16', 'F17', 'F18', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', '', '', '', '', '', '', '', '', 'NUM_LOCK', 'SCROLL_LOCK', 'WIN_OEM_FJ_JISHO', 'WIN_OEM_FJ_MASSHOU', 'WIN_OEM_FJ_TOUROKU', 'WIN_OEM_FJ_LOYA', 'WIN_OEM_FJ_ROYA', '', '', '', '', '', '', '', '', '', 'CIRCUMFLEX', 'EXCLAMATION', 'DOUBLE_QUOTE', 'HASH', 'DOLLAR', 'PERCENT', 'AMPERSAND', 'UNDERSCORE', 'OPEN_PAREN', 'CLOSE_PAREN', 'ASTERISK', 'PLUS', 'PIPE', 'HYPHEN_MINUS', 'OPEN_CURLY_BRACKET', 'CLOSE_CURLY_BRACKET', 'TILDE', '', '', '', '', 'VOLUME_MUTE', 'VOLUME_DOWN', 'VOLUME_UP', '', '', 'SEMICOLON', 'EQUALS', 'COMMA', 'MINUS', 'PERIOD', 'SLASH', 'BACK_QUOTE', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'OPEN_BRACKET', 'BACK_SLASH', 'CLOSE_BRACKET', 'QUOTE', '', 'META', 'ALTGR', '', 'WIN_ICO_HELP', 'WIN_ICO_00', '', 'WIN_ICO_CLEAR', '', '', 'WIN_OEM_RESET', 'WIN_OEM_JUMP', 'WIN_OEM_PA1', 'WIN_OEM_PA2', 'WIN_OEM_PA3', 'WIN_OEM_WSCTRL', 'WIN_OEM_CUSEL', 'WIN_OEM_ATTN', 'WIN_OEM_FINISH', 'WIN_OEM_COPY', 'WIN_OEM_AUTO', 'WIN_OEM_ENLW', 'WIN_OEM_BACKTAB', 'ATTN', 'CRSEL', 'EXSEL', 'EREOF', 'PLAY', 'ZOOM', '', 'PA1', 'WIN_OEM_CLEAR', '']
 var Polymer
@@ -177,8 +174,8 @@ Polymer({
         {tag: 'image-icons'},
         {tag: 'image-icons'},
         {tag: 'input-save'},
-        {tag: 'icon-pick', code: ['<icon-pick value="{{', 'icon', '}}"></icon-pick>']},
-        {tag: 'iron-ajax', code: ['<iron-ajax auto url="', 'https://api.github.com/repos/marcus7777/open-elements.org/issues', '" handle-as="', 'json', '" last-response="{{', 'data', '}}"></iron-ajax>']},
+        {tag: 'icon-pick', code: '<icon-pick value="{{icon}}"></icon-pick>'},
+        {tag: 'iron-ajax', code: '<iron-ajax auto url="https://api.github.com/repos/marcus7777/open-elements.org/issues" handle-as="json" last-response="{{data}}"></iron-ajax>'},
         {tag: 'iron-autogrow-textarea'},
         {tag: 'iron-button-state'},
         {tag: 'iron-checked-element-behavior'},
@@ -193,7 +190,7 @@ Polymer({
         {tag: 'iron-flex-layout'},
         {tag: 'iron-form'},
         {tag: 'iron-form-element-behavior'},
-        {tag: 'iron-icon', code: ['<iron-icon icon="', '"></iron-icon>']},
+        {tag: 'iron-icon', code: '<iron-icon icon=""></iron-icon>'},
         {tag: 'iron-icons'},
         {tag: 'iron-iconset'},
         {tag: 'iron-iconset-svg'},
@@ -231,13 +228,13 @@ Polymer({
         {tag: 'last-fm-profile'},
         {tag: 'last-fm-tracks'},
         {tag: 'lazy-pages'},
-        {tag: 'lunr-js', code: ['<lunr-js\n  data="[[', 'data', ']]"\n  search="{{', 'search', '}}"\n  output="{{', 'output', '}}" >\n<\/lunr-js>']},
+        {tag: 'lunr-js', code: '<lunr-js data="[[data]]" search="{{search}}" output="{{output}}" ><\/lunr-js>'},
         {tag: 'maps-icons'},
         {tag: 'maps-icons'},
         {tag: 'markdown-edit'},
         {tag: 'marked-element'},
         {tag: 'marked-import'},
-        {tag: 'mediator-data',code:'<mediator-data location=\"https:\/\/mediator-data.firebaseio-demo.com\" data=\"{{data}}\"></mediator-data>'},
+        {tag: 'mediator-data',code: '<mediator-data location=\"https:\/\/mediator-data.firebaseio-demo.com\" data=\"{{data}}\"></mediator-data>'},
         {tag: 'neon-animatable'},
         {tag: 'neon-animatable-behavior'},
         {tag: 'neon-animated-pages'},
@@ -333,14 +330,14 @@ Polymer({
         {tag: 'pull-to-action'},
         {tag: 'pushstate-anchor'},
         {tag: 'pushstate-anchor.csp'},
-        {tag: 'qr-code'},
+        {tag: 'qr-code', code: '<qr-code href="https://github.com/marcus7777"></qr-code>'},
         {tag: 'sc-carousel'},
         {tag: 'sc-resize'},
         {tag: 'sc-swiper'},
         {tag: 'sc-thumbnail'},
-        {tag: 'sc-timeago'},
+        {tag: 'sc-timeago', code: '<sc-timeago datetime="2015-01-01T00:00:00.000Z"></sc-timeago>'},
         {tag: 'sc-upload'},
-        {tag: 'score-element', code: ['<score-element selected="{{', 'value', '}}" start="', '0.5', '" end="', '2.0', '" step="', '0.1', '" decimals="', '1', '"></score-element>']},
+        {tag: 'score-element', code: '<score-element selected="{{value}}" start="0.5" end="2.0" step="0.1" decimals="1"></score-element>'},
         {tag: 'snap-svg'},
         {tag: 'social-icons'},
         {tag: 'sortable-import'},
@@ -391,16 +388,22 @@ Polymer({
       if (typeof tags[i].code === "string") {
         codeArray = tags[i].code.split('"')
         toggle = true
-        if (tags[i].code.length % 2) {
-          tags[i].code.push('')
-        }
-        for (var s = 0; s < codeArray.length; s = s + 2) {
-          if (toggle) {
-            codeArray[s] = codeArray[s] + '"'
+        re = /\{\{[\w]*\}\}/g
+        rebr = /\[\[[\w]*\]\]/g
+        
+        for (var s = 1; s < codeArray.length; s = s + 2) {
+          if (re.test(codeArray[s])) {
+            codeArray[s-1] = codeArray[s-1] + '"{{'
+            codeArray[s] = codeArray[s].replace(/^[\{]+|[\}]+$/g, '')
+            codeArray[s+1] = '}}"' +codeArray[s+1]
+          } else if (rebr.test(codeArray[s])) {
+            codeArray[s-1] = codeArray[s-1] + '"[['
+            codeArray[s] = codeArray[s].replace(/^[\[]+|[\]]+$/g, '')
+            codeArray[s+1] = ']]"' +codeArray[s+1]
           } else {
-            codeArray[s] = '"' + codeArray[s] 
+            codeArray[s-1] = codeArray[s-1] + '"'
+            codeArray[s+1] = '"' +codeArray[s+1]
           }
-          toggle = !toggle
         }
         tags[i].code = codeArray
       } 
@@ -439,7 +442,6 @@ Polymer({
           reach = 1
         }
         this.chrInToTab = 0
-
         if (e.options[index].hasOwnProperty('ontab')) {
           onTab = e.options[index].ontab
         } else {
@@ -451,12 +453,10 @@ Polymer({
   },
   keydown: function (e) {
     var key = keyboardMap[e.keyCode]
-
     if (tabStops[0]) {
       if (key.length === 1) {
         this.chrInToTab++
       }
-
       if (key === 'TAB' || (key === 'SPACE' && this.chrInToTab === 0)) {
         var move = 0
         var select = 0
