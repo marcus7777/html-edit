@@ -391,8 +391,10 @@ Polymer({
       if (typeof tags[i].code === "string") {
         codeArray = tags[i].code.split('"')
         toggle = true
-
-        for (var s = 0; s < codeArray.length-1; s = s + 2) {
+        if (tags[i].code.length % 2) {
+          tags[i].code.push('')
+        }
+        for (var s = 0; s < codeArray.length; s = s + 2) {
           if (toggle) {
             codeArray[s] = codeArray[s] + '"'
           } else {
