@@ -380,10 +380,7 @@ Polymer({
         var re = /(?:<\/)([\-a-z]*)(?:>)/gi
         var m
         while ((m = re.exec(tags[i].code)) !== null) {
-          if (dependencies.split(',').indexOf(m[1]) === -1) {
-            dependencies = dependencies + "," + m[1]
-            tags[i].tag = m[1];
-          }
+          tags[i].tag = m[1];
         }
       }
       
