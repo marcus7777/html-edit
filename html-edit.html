@@ -11,7 +11,7 @@
     <lunr-js limit="1000" data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
       <h3>{{label}}</h3>
-      <textarea title="Filter tag list by typing `<` then the tag try `<tabs` or `<temp` than hit tab[&#8633;]. Use the &#8593;&#8595; " rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::input}}"></textarea>
+      <textarea title="Filter tag list by typing `<` then the tag try `<tabs` or `<temp` than hit tab[&#8633;]. Use the &#8593;&#8595; to pick the tag you need than tab[&#8633;] again." rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::input}}"></textarea>
       <select on-blur="addTag" multiple>
         <template is="dom-repeat" items="{{ac}}">
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
