@@ -12,11 +12,12 @@
     <div>
       <h3>{{label}}</h3>
       <textarea rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::input}}"></textarea>
-      <select style="width:100%"  on-blur="addTag" multiple>
+      <select style="width:90%"  on-blur="addTag" multiple>
         <template is="dom-repeat" items="{{ac}}">
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
         </template>
       </select>
+      <a href="https://github.com/marcus7777/html-edit/edit/master/html-edit.html" title="github">+</a>
     </div>
     <template is="dom-if" if="{{log}}">{{chrInToTab}}</template>
   </template>
