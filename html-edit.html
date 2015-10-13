@@ -2,7 +2,7 @@
 <link rel="import" href="../lunr-js/lunr-js.html">
 <!--
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
-`<html-edit>` help you edit html.
+`<html-edit value="{{html}}" label="Your Html"></html-edit>` help you edit html.
 @demo demo.html
 -->
 
@@ -17,7 +17,7 @@
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
         </template>
       </select>
-      <a href="https://github.com/marcus7777/html-edit/edit/master/html-edit.html" title="github">+</a>
+      <a href="https://github.com/marcus7777/html-edit/edit/master/html-edit.html" title="github">+<span>{{codeNeeded}}</span>tags need code</a>
     </div>
     <template is="dom-if" if="{{log}}">{{chrInToTab}}</template>
   </template>
@@ -377,6 +377,7 @@ Polymer({
   },
   _getSuggestedTags: function (tags) {
     var output = []
+    var codeNeeded = 0
     for (var i = 0; i < tags.length; ++i) {
       if (!tags[i].hasOwnProperty('tag') && tags[i].hasOwnProperty('code')) {
         var re = /(?:<\/)([\-a-z]*)(?:>)/gi
@@ -388,6 +389,7 @@ Polymer({
 
       if (!tags[i].hasOwnProperty('code')) {
         tags[i].code = ['<' + tags[i].tag + '>', '', '</' + tags[i].tag + '>']
+        codeNeeded++
       }
 
       if (typeof tags[i].code === 'string') {
@@ -427,6 +429,7 @@ Polymer({
       }
       output.push(tags[i])
     }
+    this.codeNeeded = codeNeeded
     return output
   },
   addTag: function () {
