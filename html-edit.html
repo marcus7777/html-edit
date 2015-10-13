@@ -376,10 +376,10 @@ Polymer({
   _getSuggestedTags: function (tags) {
     var output = []
     for (var i = 0; i < tags.length; ++i) {
-      if (!tags[i].hasOwnProperty('tag')) {
+      if (!tags[i].hasOwnProperty('tag') && tags[i].hasOwnProperty('code')) {
         var re = /(?:<\/)([\-a-z]*)(?:>)/gi
         var m
-        while ((m = re.exec(domTemplate)) !== null) {
+        while ((m = re.exec(tags[i].code)) !== null) {
           if (dependencies.split(',').indexOf(m[1]) === -1) {
             dependencies = dependencies + "," + m[1]
             tags[i].tag = m[1];
