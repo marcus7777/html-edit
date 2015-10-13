@@ -391,7 +391,9 @@ Polymer({
 
       if (!tags[i].hasOwnProperty('code')) {
         tags[i].code = ['<' + tags[i].tag + '>', '', '</' + tags[i].tag + '>']
-        codeNeeded++
+        if (tags[i].tag.indexOf('-')){
+          codeNeeded++ 
+        }
       }
 
       if (typeof tags[i].code === 'string') {
