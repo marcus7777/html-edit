@@ -109,7 +109,7 @@ var codesnips = [
   {tag: 'google-map'},
   {tag: 'google-map-directions'},
   {tag: 'google-map-marker'},
-  {tag: 'google-map-search'},
+  {tag: 'google-map-search', code: '      <google-map-search map=\"[[map]]\" query=\"Pizza\" results=\"{{results}}\">\r\n      <\/google-map-search>\r\n      <google-map map=\"{{map}}\" latitude=\"37.779\"\r\n                  longitude=\"-122.3892\">\r\n        <template is=\"dom-repeat\" items=\"{{results}}\" as=\"marker\">\r\n          <google-map-marker latitude=\"{{marker.latitude}}\"\r\n                             longitude=\"{{marker.longitude}}\">\r\n            <h2>{{marker.name}}<\/h2>\r\n            <span>{{marker.formatted_address}}<\/span>\r\n          <\/google-map-marker>\r\n        <\/template>\r\n      <\/google-map>'},
   {tag: 'google-maps-api'},
   {tag: 'google-plusone-api'},
   {tag: 'google-realtime-api'},
