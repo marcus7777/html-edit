@@ -130,8 +130,18 @@ Polymer({
      *
      */
     tags: {
-      value: codesnips
+      computed: "getCodeSnips(listOfElements)"
     }
+  },
+  getCodeSnips: function(listOfElements) {
+    var list = listOfElements.split('\n')
+    list.forEach(function (a) {
+      newTag = a.split('/')[a.split('/').length-1].split('.')[0]
+      if (newTag && codesnips.indexOf({tag: newTag }) !== -1) {
+        codesnips.push({tag: newTag})
+      }
+    })
+    return codesnips
   },
   updateFilter: function () {
     var re = /<([-\w]*)$/g
