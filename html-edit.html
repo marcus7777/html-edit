@@ -137,8 +137,8 @@ Polymer({
     var list = listOfElements.split('\n')
     list.forEach(function (a) {
       newTag = a.split('/')[a.split('/').length-1].split('.')[0]
-      if (newTag && codesnips.indexOf({tag: newTag }) !== -1) {
-        codesnips.push({tag: newTag})
+      if (newTag && codesnips.indexOf({tag: newTag, link: a}) !== -1) {
+        codesnips.push({tag: newTag, link: a})
       }
     })
     return codesnips
