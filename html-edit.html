@@ -17,7 +17,6 @@
           <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
         </template>
       </select>
-      <a href="https://github.com/marcus7777/html-edit/edit/master/html-edit.html" title="github"><span>{{codeNeeded}}</span>/<span>{{suggestedTags.length}}</span> tags need code please help &#128515;</a>
     </div>
     <template is="dom-if" if="{{log}}">{{chrInToTab}}</template>
   </template>
@@ -137,8 +136,8 @@ Polymer({
     var list = listOfElements.split('\n')
     list.forEach(function (a) {
       newTag = a.split('/')[a.split('/').length-1].split('.')[0]
-      if (newTag && codesnips.indexOf({tag: newTag, link: a}) !== -1) {
-        codesnips.push({tag: newTag, link: a})
+      if (newTag) {
+        codesnips.push({tag: newTag, link: '/' + a})
       }
     })
     return codesnips
@@ -217,7 +216,6 @@ Polymer({
       }
       output.push(tags[i])
     }
-    this.codeNeeded = codeNeeded
     return output
   },
   addTag: function () {
@@ -227,6 +225,7 @@ Polymer({
       var tag = e.options[index].value
       e.selectedOptions[0].selected = false
       if (tag) {
+        // TODO if on code get it from linked (link) file look for ` or "    " before code within <!-- --> or /*  */ ending in ` or \n
         var t = this.$$('textarea')
         var goBack = 0
         var reach = 0
