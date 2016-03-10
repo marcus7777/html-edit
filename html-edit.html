@@ -226,6 +226,8 @@ Polymer({
       e.selectedOptions[0].selected = false
       if (tag) {
         // TODO if on code get it from linked (link) file look for ` or "    " before code within <!-- --> or /*  */ ending in ` or \n
+        // /\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/ for /* */
+        //
         var t = this.$$('textarea')
         var goBack = 0
         var reach = 0
