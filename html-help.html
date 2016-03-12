@@ -17,7 +17,7 @@ Polymer({
     src: String,
     attr: {
       notify: true,
-      computed:"getAttr(theElement.properties)"
+      computed:"getAttr(theElement.properties, theElement.behaviors, output.behaviors)"
     },
     docs: {
       notify: true,
@@ -27,7 +27,8 @@ Polymer({
       computed: "getElement(output.elements, src)"
     }
   },
-  getAttr: function(properties) {if (properties) {
+  getAttr: function(properties, theElementBehaviors ,allBehaviors) {if (properties) {
+    // TODO find attr for paper-input ... 
     return this.addAttrs(properties)
   }},
   getDocs: function(docs) {if (docs) {
