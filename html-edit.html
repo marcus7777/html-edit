@@ -12,17 +12,27 @@
     <lunr-js limit="1000" no-stop-words="true" data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
       <h3>{{label}}</h3>
-      <textarea title="Filter tag list by typing `<` then the tag try `<tabs` or `<temp` than hit tab[&#8633;]. Use the &#8593;&#8595; to pick the tag you need than tab[&#8633;] again." rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" on-keydown="keydown"  label="{{label}}" value="{{value::input}}"></textarea>
-      <select on-blur="addTag" multiple>
-        <template is="dom-repeat" items="{{ac}}">
-          <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
-        </template>
-      </select>
+      <textarea title="Filter tag list by typing `<` then the tag try `<tabs` or `<temp` than hit tab[&#8633;]. Use the &#8593;&#8595; to pick the tag you need than tab[&#8633;] again." rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
+      <template is="dom-if" if="{{ac.length}}">
+        <select on-blur="addTag" multiple>
+          <template is="dom-repeat" items="{{ac}}">
+            <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}" link="{{item.link}}">{{item.tag}}</option>
+          </template>
+        </select>
+      </template> 
+      <html-help src="{{link}}" docs="{{docs}}" attr="{{acAtt}}" ></html-help>
+      <template is="dom-if" if="{{acAtt.length}}">
+        <select on-blur="addTag" multiple>
+          <template is="dom-repeat" items="{{acAtt}}">
+            <option value="{{item.attr}}" title="{{item.desc}}" ="{{item.move}}">{{item.attr}}</option>
+          </template>
+        </select>
+      </template>
     </div>
   </template>
 </dom-module>
 <script>
-// find a tag without code add a useful code sniplets please .
+// find a tag without code add a useful code sniplets please.
 var codesnips = [
   {code: ['<content></content>']},
   {code: ['<template is="dom-bind">\n  ', '', '\n</template>'], tag: 'dom-bind'},
@@ -131,13 +141,25 @@ Polymer({
   },
   getCodeSnips: function(listOfElements) {
     var list = listOfElements.split('\n')
+    var newCodesnips = []
     list.forEach(function (a) {
-      newTag = a.split('/')[a.split('/').length-1].split('.')[0]
+      var newTag = a.split('/')[a.split('/').length-1].split('.')[0]
       if (newTag) {
-        codesnips.push({tag: newTag, link: '/' + a})
+        var code
+        codesnips.forEach(function(tag) {
+          if (tag.code) {
+            if (tag.tag === newTag) {
+              code = tag.code
+            }
+            if (tag.code.join(' ').indexOf('</'+ newTag +'>') ) {
+              code = tag.code
+            }
+          }
+        })
+        newCodesnips.push({tag: newTag, link: '/' + a,code: code})
       }
     })
-    return codesnips
+    return newCodesnips
   },
   updateFilter: function () {
     var re = /<([-\w]*)$/g
