@@ -1,5 +1,3 @@
-<link rel="import" href="../marked-element/marked-element.html">
-<link rel="import" href="../prism-element/prism-highlighter.html">
 <link rel="import" href="../hydrolysis/hydrolysis-analyzer.html">
 <link rel="import" href="../polymer/polymer.html">
 <!--
@@ -8,22 +6,9 @@
 -->
 
 <dom-module id="html-help">
-<template>
-  <hydrolysis-analyzer src="{{src}}" analyzer="{{output}}"></hydrolysis-analyzer>
-  <prism-highlighter></prism-highlighter>
-  <!-- more to js 
-  <template is="dom-repeat" items="{{output.elements}}">
-    <br />{{item.contentHref}} <br /> 
-    <h3> Attr: </h3>
-    <template is="dom-repeat" items="{{item.properties}}">
-      <template is="dom-if" if="{{item.published}}">
-        {{item.name}} 
-      </template>
-    </template>
-    <h3>Docs</h3>
-    <marked-element markdown={{item.desc}}></marked-element>
-  </template> -->
-</template>
+  <template>
+    <hydrolysis-analyzer src="{{src}}" analyzer="{{output}}"></hydrolysis-analyzer>
+  </template>
 </dom-module>
 <script>
 Polymer({
@@ -32,12 +17,35 @@ Polymer({
     src: String,
     attr: {
       notify: true,
-      computed:""
+      computed:"getAttr(theElement.properties)"
     },
     docs: {
       notify: true,
-      computed:""
+      computed:"getDocs(theElement.desc)"
+    },
+    theElement: {
+      computed: "getElement(output.elements, src)"
     }
+  },
+  getAttr: function(properties) {if (properties) {
+    return this.addAttrs(properties)
+  }},
+  getDocs: function(docs) {if (docs) {
+    return docs      
+  }},
+  getElement: function(elements, src) {if (elements && src) {
+    for (var index = 0; index < elements.length; ++index) {
+      if (-1 !== elements[index].contentHref.indexOf(src)) {
+        return elements[index]
+      }
+    }
+  }},
+  addAttrs: function(properties) {
+    for (var index = 0; index < properties.length; ++index) {
+      properties[index].attr = properties[index].name.replace(/[a-z][A-Z]/g,     
+function(str, offset) {return str[0] + '-' + str[1].toLowerCase()})
+    }
+    return properties
   }
 })
 </script>
