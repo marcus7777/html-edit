@@ -151,7 +151,10 @@ Polymer({
             if (tag.tag === newTag) {
               code = tag.code
             }
-            if (tag.code.join(' ').indexOf('</'+ newTag +'>') ) {
+            if (Array.isArray(tag.code) && tag.code.join(' ').indexOf('</'+ newTag +'>') ) {
+              code = tag.code
+            }
+            if (-1 !== tag.code.indexOf('</'+ newTag +'>') ) {
               code = tag.code
             }
           }
