@@ -13,7 +13,7 @@
     <div>
       <h3>{{label}}</h3>
       <textarea title="Filter tag list by typing `<` then the tag try `<tabs` or `<temp` than hit tab[&#8633;]. Use the &#8593;&#8595; to pick the tag you need than tab[&#8633;] again." rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
-      <template is="dom-if" if="{{filter}}">
+      <template is="dom-if" if="{{!acAttr.length}}">
         <select on-blur="addTag" multiple>
           <template is="dom-repeat" items="{{ac}}">
             <option value="{{item.tag}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
@@ -21,9 +21,8 @@
         </select>
       </template> 
       <html-help src="{{theLink}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
-      {{acAttr.length}} {{theLink}}
       <template is="dom-if" if="{{acAttr.length}}">
-        <select on-blur="addTag" multiple>
+        <select on-blur="addAttr" multiple>
           <template is="dom-repeat" items="{{acAttr}}">
             <option value="{{item.attr}}" title="{{item.desc}}">{{item.attr}}</option>
           </template>
@@ -272,6 +271,23 @@ Polymer({
       output.push(tags[i])
     }
     return output
+  },
+  addAttr: function () {
+    var e = this.$$('select')
+    var index = e.selectedIndex
+    if (index !== -1) {
+      var tag = e.options[index].value
+      e.selectedOptions[0].selected = false
+      if (tag) {
+        var t = this.$$('textarea')
+        var goBack = 0
+        var reach = 0
+        if (this.filter.length > 0) {
+          //goBack = (this.filter.length)
+        }
+        TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag, 0)
+      }
+    }
   },
   addTag: function () {
     var e = this.$$('select')
