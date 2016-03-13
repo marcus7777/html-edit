@@ -13,7 +13,7 @@
     <div>
       <h3>{{label}}</h3>
       <textarea title="Filter tag list by typing `<` then the tag try `<tabs` or `<temp` than hit tab[&#8633;]. Use the &#8593;&#8595; to pick the tag you need than tab[&#8633;] again." rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
-      <template is="dom-if" if="{{!acAtt.length}}">
+      <template is="dom-if" if="{{filter}}">
         <select on-blur="addTag" multiple>
           <template is="dom-repeat" items="{{ac}}">
             <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}" link="{{item.link}}">{{item.tag}}</option>
@@ -148,18 +148,16 @@ Polymer({
     list.forEach(function (a) {
       var newTag = a.split('/')[a.split('/').length-1].split('.')[0]
       if (newTag) {
-        var code
+        var code = ''
         codesnips.forEach(function(tag) {
           if (tag.code) {
             if (tag.tag === newTag) {
               code = tag.code
-            }
-            if (Array.isArray(tag.code) && tag.code.join(' ').indexOf('</'+ newTag +'>') ) {
+            } else if (Array.isArray(tag.code) &&  -1 === tag.code.join(' ').indexOf('</'+ newTag +'>') ) {
               code = tag.code
-            }
-            if (-1 !== tag.code.indexOf('</'+ newTag +'>') ) {
+            } else if (-1 !== tag.code.indexOf('</'+ newTag +'>') ) {
               code = tag.code
-            }
+            } 
           }
         })
         newCodesnips.push({tag: newTag, link: '/' + a,code: code})
@@ -179,16 +177,23 @@ Polymer({
     if (start === end) {
       var textBefore = t.value.substring(0, start)
       var mt
+      var mtGot
+
       if ((mt = re.exec(textBefore)) !== null) {
         if (mt.index === re.lastIndex) {
           re.lastIndex++
         }
         this.filter = mt[1]
-      } else if (mt = reGot.exec(textBefore) !== null) {
-        if (mt.index === re.lastIndex) {
-          re.lastIndex++
+      } else if (mtGot = reGot.exec(textBefore) !== null) {
+        if (mtGot.index === reGot.lastIndex) {
+          reGot.lastIndex++
         }
-        this.filter = mt[1]
+        this.filter = mtGot[1]
+      } else if (mtGot = reGot.exec(textBefore) !== null) {
+        if (mtGot.index === reGot.lastIndex) {
+          reGot.lastIndex++
+        }
+        this.filter = mtGot[1]
       } else {
         this.filter = ''
       }
