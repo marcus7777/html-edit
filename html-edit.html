@@ -20,8 +20,8 @@
           </template>
         </select>
       </template> 
-      <html-help src="{{theLink}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
-      <template is="dom-if" if="{{acAttr.length}}">
+      <template is="dom-if" if="{{theLink}}" restamp>
+        <html-help src="{{theLink}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
         <select on-blur="addAttr" multiple>
           <template is="dom-repeat" items="{{acAttr}}">
             <option value="{{item.attr}}" title="{{item.desc}}">{{item.attr}}</option>
@@ -302,10 +302,7 @@ Polymer({
         if (this.filter.length > 0) {
           goBack = (this.filter.length)
         }
-        if (t.value.substring(t.selectionStart, t.selectionStart + 1) === '>') {
-          reach = 1
-        }
-        TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag, e.options[index].move)
+        TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag, 0)
       }
     }
   },
