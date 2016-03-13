@@ -20,10 +20,11 @@
           </template>
         </select>
       </template> 
-      <html-help src="{{link}}" docs="{{docs}}" attr="{{acAtt}}" ></html-help>
-      <template is="dom-if" if="{{acAtt.length}}">
+      <html-help src="{{link}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
+      {{acAttr.length}} {{link}}
+      <template is="dom-if" if="{{acAttr.length}}">
         <select on-blur="addTag" multiple>
-          <template is="dom-repeat" items="{{acAtt}}">
+          <template is="dom-repeat" items="{{acAttr}}">
             <option value="{{item.attr}}" title="{{item.desc}}" ="{{item.move}}">{{item.attr}}</option>
           </template>
         </select>
@@ -150,7 +151,7 @@ Polymer({
       if (tag.tag === filter) {
         return tag.link
       }
-    } 
+    })
   }},
   getCodeSnips: function(listOfElements) {
     var list = listOfElements.split('\n')
