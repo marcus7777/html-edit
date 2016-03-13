@@ -171,7 +171,7 @@ Polymer({
     // if writing <paper-i
     var re = /<([-\w]*)$/g
     // if writen <paper-input 
-    var re = /<([\w-]*)[^>]*$/g
+    var reGot = /<([\w-]*)[^>]*$/g
 
     var t = this.$$('textarea')
     var start = t.selectionStart
@@ -180,6 +180,11 @@ Polymer({
       var textBefore = t.value.substring(0, start)
       var mt
       if ((mt = re.exec(textBefore)) !== null) {
+        if (mt.index === re.lastIndex) {
+          re.lastIndex++
+        }
+        this.filter = mt[1]
+      } else if (mt = reGot.exec(textBefore) !== null) {
         if (mt.index === re.lastIndex) {
           re.lastIndex++
         }
