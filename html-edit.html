@@ -16,7 +16,7 @@
       <template is="dom-if" if="{{filter}}">
         <select on-blur="addTag" multiple>
           <template is="dom-repeat" items="{{ac}}">
-            <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
+            <option value="{{item.tag}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
           </template>
         </select>
       </template> 
@@ -147,11 +147,13 @@ Polymer({
     }
   },
   getLink(filter,tags) { if (filter && tags) {
+    var theLink
     tags.forEach(function (tag) {
       if (tag.tag === filter) {
-        return tag.link
+        theLink = tag.link
       }
     })
+    return theLink
   }},
   getCodeSnips: function(listOfElements) {
     var list = listOfElements.split('\n')
@@ -282,7 +284,7 @@ Polymer({
         var goBack = 0
         var reach = 0
         if (this.filter.length > 0) {
-          goBack = (this.filter.length + 1)
+          goBack = (this.filter.length)
         }
         if (t.value.substring(t.selectionStart, t.selectionStart + 1) === '>') {
           reach = 1
