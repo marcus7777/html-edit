@@ -16,12 +16,12 @@
       <template is="dom-if" if="{{filter}}">
         <select on-blur="addTag" multiple>
           <template is="dom-repeat" items="{{ac}}">
-            <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}" link="{{item.link}}">{{item.tag}}</option>
+            <option value="{{item.code}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
           </template>
         </select>
       </template> 
-      <html-help src="{{link}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
-      {{acAttr.length}} {{link}}
+      <html-help src="{{theLink}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
+      {{acAttr.length}} {{theLink}}
       <template is="dom-if" if="{{acAttr.length}}">
         <select on-blur="addTag" multiple>
           <template is="dom-repeat" items="{{acAttr}}">
@@ -142,7 +142,7 @@ Polymer({
     tags: {
       computed: "getCodeSnips(listOfElements)"
     },
-    link: {
+    theLink: {
       computed: "getLink(filter,tags)"
     }
   },
