@@ -140,8 +140,18 @@ Polymer({
      */
     tags: {
       computed: "getCodeSnips(listOfElements)"
+    },
+    link: {
+      computed: "getLink(filter,tags)"
     }
   },
+  getLink(filter,tags) { if (filter && tags) {
+    tags.forEach(function (tag) {
+      if (tag.tag === filter) {
+        return tag.link
+      }
+    } 
+  }},
   getCodeSnips: function(listOfElements) {
     var list = listOfElements.split('\n')
     var newCodesnips = []
