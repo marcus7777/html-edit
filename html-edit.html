@@ -178,22 +178,25 @@ Polymer({
       var textBefore = t.value.substring(0, start)
       var mt
       var mtGot
-
-      if ((mt = re.exec(textBefore)) !== null) {
+      mt = re.exec(textBefore)
+      mtGot = reGot.exec(textBefore)
+      if (mt !== null) {
         if (mt.index === re.lastIndex) {
           re.lastIndex++
         }
         this.filter = mt[1]
-      } else if (mtGot = reGot.exec(textBefore) !== null) {
+      } else if (mtGot !== null) {
         if (mtGot.index === reGot.lastIndex) {
           reGot.lastIndex++
+        } 
+        if (Array.isArray(mtGot)) {
+          this.filter = mtGot[1]
+        } else if (mtGot = reGot.exec(textBefore) !== null) {
+          if (mtGot.index === reGot.lastIndex) {
+            reGot.lastIndex++
+          }
+          this.filter = mtGot[1]
         }
-        this.filter = mtGot[1]
-      } else if (mtGot = reGot.exec(textBefore) !== null) {
-        if (mtGot.index === reGot.lastIndex) {
-          reGot.lastIndex++
-        }
-        this.filter = mtGot[1]
       } else {
         this.filter = ''
       }
