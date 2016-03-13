@@ -25,7 +25,7 @@
       <template is="dom-if" if="{{acAttr.length}}">
         <select on-blur="addTag" multiple>
           <template is="dom-repeat" items="{{acAttr}}">
-            <option value="{{item.attr}}" title="{{item.desc}}" ="{{item.move}}">{{item.attr}}</option>
+            <option value="{{item.attr}}" title="{{item.desc}}">{{item.attr}}</option>
           </template>
         </select>
       </template>
@@ -143,7 +143,7 @@ Polymer({
       computed: "getCodeSnips(listOfElements)"
     },
     theLink: {
-      computed: "getLink(filter,tags)"
+      computed: "getLink(filter,tags)", value "texting"
     }
   },
   getLink(filter,tags) { if (filter && tags) {
@@ -179,7 +179,7 @@ Polymer({
   updateFilter: function () {
     // if writing <paper-i
     var re = /<([-\w]*)$/g
-    // if writen <paper-input 
+    // if writen <paper-input va
     var reGot = /<([\w-]*)[^>]*$/g
 
     var t = this.$$('textarea')
