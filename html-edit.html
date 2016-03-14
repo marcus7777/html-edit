@@ -296,7 +296,7 @@ Polymer({
         if (!tag.hasOwnProperty('code') || !tag.code) {
           tag.code = tag.tag + '></' + tag.tag + '>'
         }
-        TextEvent(t, t.selectionStart - this.filter.length, t.selectionStart + tag.tag.length, tag.code, 0)
+        TextEvent(t, t.selectionStart - this.filter.length, t.selectionStart, tag.code, tag.tag.length)
       }
     }
   },
