@@ -9,12 +9,12 @@
 
 <dom-module id="html-edit">
   <template>
-    <lunr-js limit="1000" no-stop-words="true" data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
+    <lunr-js limit="1000" no-stop-words data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
       <h3>{{label}}</h3>
-      <textarea title="Filter tag list by typing `<` then the tag try `<tabs` or `<temp` than hit tab[&#8633;]. Use the &#8593;&#8595; to pick the tag you need than tab[&#8633;] again." rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
+      <textarea title="<search att" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
       <template is="dom-if" if="{{!theLink}}">
-        <select on-blur="addTag" multiple>
+        <select on-blur="addTag" multiple id="tag">
           <template is="dom-repeat" items="{{ac}}">
             <option value="{{item.tag}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
           </template>
@@ -22,8 +22,9 @@
       </template> 
       <template is="dom-if" if="{{theLink}}" restamp>
         <html-help src="{{theLink}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
-        <select on-blur="addAttr" multiple>
-          <template is="dom-repeat" items="{{acAttr}}">
+        <lunr-js limit="100" fields=["attr","desc"] no-stop-words data="{{acAttr}}" search="{{filterAttr}}" output="{{attrList}}"></lunr-js>
+        <select on-blur="addAttr" multiple id="attr">
+          <template is="dom-repeat" items="{{attrList}}">
             <option value="{{item.attr}}" title="{{item.desc}}">{{item.attr}}</option>
           </template>
         </select>
@@ -145,7 +146,16 @@ Polymer({
       computed: "getLink(filter,tags)", value:""
     }
   },
-  getLink(filter,tags) { if (filter && tags) {
+  getTag: function(tagName) {
+    var theTag
+    this.tags.forEach(function (tag) {
+      if (tag.tag === tagName) {
+        theTage = tag
+      }
+    })
+    return theTag
+  },
+  getLink: function(filter,tags) { if (filter && tags) {
     var theLink
     tags.forEach(function (tag) {
       if (tag.tag === filter) {
@@ -201,14 +211,8 @@ Polymer({
         if (mtGot.index === reGot.lastIndex) {
           reGot.lastIndex++
         } 
-        if (Array.isArray(mtGot)) {
-          this.filter = mtGot[1]
-        } else if (mtGot = reGot.exec(textBefore) !== null) {
-          if (mtGot.index === reGot.lastIndex) {
-            reGot.lastIndex++
-          }
-          this.filter = mtGot[1]
-        }
+        this.filter = mtGot[1]
+        this.filterAttr = textBefore.split(' ').pop()
       } else {
         this.filter = ''
       }
@@ -226,12 +230,6 @@ Polymer({
         }
       }
 
-      if (!tags[i].hasOwnProperty('code')) {
-        tags[i].code = ['<' + tags[i].tag + '>', '', '</' + tags[i].tag + '>']
-        if (tags[i].tag.indexOf('-')){
-          codeNeeded++ 
-        }
-      }
 
       if (typeof tags[i].code === 'string') {
         var codeArray = tags[i].code.split('"')
@@ -273,27 +271,22 @@ Polymer({
     return output
   },
   addAttr: function () {
-    var e = this.$$('select')
+    var e = this.$$('select#attr')
     var index = e.selectedIndex
     if (index !== -1) {
-      var tag = e.options[index].value
+      var attr = e.options[index].value
       e.selectedOptions[0].selected = false
-      if (tag) {
+      if (attr) {
         var t = this.$$('textarea')
-        var goBack = 0
-        var reach = 0
-        if (this.filter.length > 0) {
-          //goBack = (this.filter.length)
-        }
-        TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag, 0)
+        TextEvent(t, t.selectionStart, t.selectionStart, attr, attr.length)
       }
     }
   },
   addTag: function () {
-    var e = this.$$('select')
+    var e = this.$$('select#tag')
     var index = e.selectedIndex
     if (index !== -1) {
-      var tag = e.options[index].value
+      var tag = this.getTag(e.options[index].value)
       e.selectedOptions[0].selected = false
       if (tag) {
         var t = this.$$('textarea')
@@ -301,6 +294,9 @@ Polymer({
         var reach = 0
         if (this.filter.length > 0) {
           goBack = (this.filter.length)
+        }
+        if (!tag.hasOwnProperty('code')) {
+          tag.code = ['<' + tag.tag + '>', '', '</' + tag.tag + '>']
         }
         TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag, 0)
       }
