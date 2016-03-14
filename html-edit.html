@@ -150,7 +150,7 @@ Polymer({
     var theTag
     this.tags.forEach(function (tag) {
       if (tag.tag === tagName) {
-        theTage = tag
+        theTag = tag
       }
     })
     return theTag
@@ -295,10 +295,10 @@ Polymer({
         if (this.filter.length > 0) {
           goBack = (this.filter.length)
         }
-        if (!tag.hasOwnProperty('code')) {
+        if (!tag.hasOwnProperty('code') || !tag.code) {
           tag.code = ['<' + tag.tag + '>', '', '</' + tag.tag + '>']
         }
-        TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag, 0)
+        TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag.code, 0)
       }
     }
   },
