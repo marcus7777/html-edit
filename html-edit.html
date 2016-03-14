@@ -296,9 +296,9 @@ Polymer({
           goBack = (this.filter.length)
         }
         if (!tag.hasOwnProperty('code') || !tag.code) {
-          tag.code = ['<' + tag.tag + '>', '', '</' + tag.tag + '>']
+          tag.code = tag.tag + '></' + tag.tag + '>']
         }
-        TextEvent(t, t.selectionStart - goBack, t.selectionStart + reach, tag.code, 0)
+        TextEvent(t, t.selectionStart , t.selectionStart + tag.tag.length, tag.code, 0)
       }
     }
   },
