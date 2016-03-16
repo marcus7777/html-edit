@@ -63,7 +63,7 @@ var codesnips = [
   },
   {code:'<excess-route route="/users/:userId" user-id="{{appUserId}}"></excess-route>'},
   {tag: 'google-castable-video', code: ['<video is="google-castable-video">\n  <source src="', 'video.mp4', '" type="', 'video\/mp4', '">\n<\/video>\n']},
-  {tag: 'google-map-search', code: '      <google-map-search map=\"[[map]]\" query=\"Pizza\" results=\"{{results}}\">\r\n      <\/google-map-search>\r\n      <google-map map=\"{{map}}\" latitude=\"37.779\"\r\n                  longitude=\"-122.3892\">\r\n        <template is=\"dom-repeat\" items=\"{{results}}\" as=\"marker\">\r\n          <google-map-marker latitude=\"{{marker.latitude}}\"\r\n                             longitude=\"{{marker.longitude}}\">\r\n            <h2>{{marker.name}}<\/h2>\r\n            <span>{{marker.formatted_address}}<\/span>\r\n          <\/google-map-marker>\r\n        <\/template>\r\n      <\/google-map>'},
+  {tag: 'google-map-search', code: '      <google-map-search style="height:600px"  map=\"[[map]]\" query=\"Pizza\" results=\"{{results}}\">\r\n      <\/google-map-search>\r\n      <google-map map=\"{{map}}\" latitude=\"37.779\"\r\n                  longitude=\"-122.3892\">\r\n        <template is=\"dom-repeat\" items=\"{{results}}\" as=\"marker\">\r\n          <google-map-marker latitude=\"{{marker.latitude}}\"\r\n                             longitude=\"{{marker.longitude}}\">\r\n            <h2>{{marker.name}}<\/h2>\r\n            <span>{{marker.formatted_address}}<\/span>\r\n          <\/google-map-marker>\r\n        <\/template>\r\n      <\/google-map>'},
   {code: '<html-edit label="Edit your html" value="{{code}}"></html-edit>'},
   {code: '<img-crop upload-url="[[uploadUrl]]" auth-token="[[authdata.token]]"></img-crop>'},
   {tag: 'input-save', code: '<input-save path="name" label="Name the new element - like pirate-ninja" value="{{_name}}" pattern="[a-z]+-[a-z\\-]*[a-z]+" auto-validate  error-message="Need\'s to have a \'-\' between lowercase letters "><\/input-save>'},
@@ -278,13 +278,17 @@ Polymer({
       e.selectedOptions[0].selected = false
       if (attr) {
         var t = this.$$('textarea')
-        TextEvent(t, t.selectionStart, t.selectionStart, attr, attr.length)
+        TextEvent(t, t.selectionStart - this.filterAttr.length, t.selectionStart, attr, attr.length)
       }
     }
   },
   addTag: function () {
     var e = this.$$('select#tag')
     var index = e.selectedIndex
+    var t = this.$$('textarea')
+    var textBefore = t.value.substring(0, t.selectionStart)
+    var lastWord = textBefore.split(' ').pop()
+
     if (index !== -1) {
       var tag = this.getTag(e.options[index].value)
       e.selectedOptions[0].selected = false
@@ -294,9 +298,9 @@ Polymer({
           goBack = (this.filter.length)
         }
         if (!tag.hasOwnProperty('code') || !tag.code) {
-          tag.code = tag.tag + '></' + tag.tag + '>'
+          tag.code = "<" + tag.tag + '></' + tag.tag + '>'
         }
-        TextEvent(t, t.selectionStart - this.filter.length, t.selectionStart, tag.code, tag.tag.length)
+        TextEvent(t, t.selectionStart - lastWord.length, t.selectionStart, tag.code, tag.tag.length)
       }
     }
   },
