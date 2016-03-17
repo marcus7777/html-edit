@@ -286,7 +286,7 @@ Polymer({
     var e = this.$$('select#tag')
     var index = e.selectedIndex
     var t = this.$$('textarea')
-    var textBefore = t.value.substring(0, t.selectionStart)
+    var textBefore = t.value.substring(0, t.editor.selectionStart)
     var lastWord = textBefore.split(' ').pop()
 
     if (index !== -1) {
@@ -300,7 +300,7 @@ Polymer({
         if (!tag.hasOwnProperty('code') || !tag.code) {
           tag.code = "<" + tag.tag + '></' + tag.tag + '>'
         }
-        TextEvent(t, t.selectionStart - lastWord.length, t.selectionStart, tag.code, tag.tag.length)
+        TextEvent(t, t.selectionStart - this.filter.length, t.selectionStart, tag.code, tag.tag.length)
       }
     }
   },
