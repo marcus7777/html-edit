@@ -300,7 +300,15 @@ Polymer({
         if (!tag.hasOwnProperty('code') || !tag.code) {
           tag.code = "<" + tag.tag + '></' + tag.tag + '>'
         }
-        TextEvent(t, t.selectionStart - this.filter.length, t.selectionStart, tag.code, tag.move)
+        // TODO tag.move need to be programmatically generated here
+        if (!tag.move) {
+          tag.move = [("<" + tag.tag).length, ("<" + tag.tag).length]
+        }
+        if (this.filter.length > 0) {
+          TextEvent(t, t.selectionStart - ("<" + this.filter).length, t.selectionStart, tag.code, tag.move)
+        } else {
+          TextEvent(t, t.selectionStart, t.selectionStart, tag.code, tag.move)
+        }
       }
     }
   },
