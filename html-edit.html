@@ -12,7 +12,7 @@
     <lunr-js limit="1000" no-stop-words data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
       <h3>{{label}}</h3>
-      <textarea title="<search att" rows="9" style="width:100%" on-focus="showAc" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
+      <textarea title="<search att" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
       <template is="dom-if" if="{{ac}}">
         <template is="dom-if" if="{{!theLink}}">
           <select on-blur="addTag" multiple id="tag">
@@ -219,10 +219,6 @@ Polymer({
         this.filter = ''
       }
     }
-    this.ac = false
-  },
-  showAc: function (tags) {
-    this.ac = true
   },
   _getSuggestedTags: function (tags) {
     var output = []
@@ -320,6 +316,7 @@ Polymer({
   },
   takekey: function (e) {
     this.debounce('updateFilter', this.updateFilter, 500)
+    this.set("ac", true)
   }
 })
 </script>
