@@ -12,22 +12,24 @@
     <lunr-js limit="1000" no-stop-words data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
       <h3>{{label}}</h3>
-      <textarea title="<search att" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
-      <template is="dom-if" if="{{!theLink}}">
-        <select on-blur="addTag" multiple id="tag">
-          <template is="dom-repeat" items="{{ac}}">
-            <option value="{{item.tag}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
-          </template>
-        </select>
-      </template> 
-      <template is="dom-if" if="{{theLink}}" restamp>
-        <html-help src="{{theLink}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
-        <lunr-js limit="100" fields=["attr","desc"] no-stop-words data="{{acAttr}}" search="{{filterAttr}}" output="{{attrList}}"></lunr-js>
-        <select on-blur="addAttr" multiple id="attr">
-          <template is="dom-repeat" items="{{attrList}}">
-            <option value="{{item.attr}}" title="{{item.desc}}">{{item.attr}}</option>
-          </template>
-        </select>
+      <textarea title="<search att" rows="9" style="width:100%" on-focus="showAc" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
+      <template is="dom-if" if="{{ac}}">
+        <template is="dom-if" if="{{!theLink}}">
+          <select on-blur="addTag" multiple id="tag">
+            <template is="dom-repeat" items="{{ac}}">
+              <option value="{{item.tag}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
+            </template>
+          </select>
+        </template> 
+        <template is="dom-if" if="{{theLink}}" restamp>
+          <html-help src="{{theLink}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
+          <lunr-js limit="100" fields=["attr","desc"] no-stop-words data="{{acAttr}}" search="{{filterAttr}}" output="{{attrList}}"></lunr-js>
+          <select on-blur="addAttr" multiple id="attr">
+            <template is="dom-repeat" items="{{attrList}}">
+              <option value="{{item.attr}}" title="{{item.desc}}">{{item.attr}}</option>
+            </template>
+          </select>
+        </template>
       </template>
     </div>
   </template>
@@ -217,6 +219,10 @@ Polymer({
         this.filter = ''
       }
     }
+    this.ac = false
+  },
+  showAc: function (tags) {
+    this.ac = true
   },
   _getSuggestedTags: function (tags) {
     var output = []
