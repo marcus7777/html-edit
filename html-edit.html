@@ -2,7 +2,6 @@
 <link rel="import" href="../lunr-js/lunr-js.html">
 <link rel="import" href="html-help.html">
 <!--
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
 `<html-edit value="{{html}}" label="Your Html"></html-edit>` help you edit html with all the elements from open-elements.org. 🌈
 @demo demo.html
 -->
@@ -11,8 +10,8 @@
   <template>
     <lunr-js limit="1000" no-stop-words data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
-      <h3>{{label}}</h3>
-      <textarea title="<search att" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" label="{{label}}" value="{{value::input}}"></textarea>
+      <label for="htmlbox">{{label}}</label><br>
+      <textarea id="htmlbox" title="<search att" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" value="{{value::input}}"></textarea>
       <template is="dom-if" if="{{filter}}">
         <select on-blur="addTag" multiple id="tag">
           <template is="dom-repeat" items="{{ac}}">
