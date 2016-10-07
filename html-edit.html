@@ -284,7 +284,6 @@ Polymer({
   addTag: function () {
     var e = this.$$('select#tag')
     var index = e.selectedIndex
-    var t = this.$$('textarea')
     var textBefore = t.value.substring(0, t.selectionStart)
     var lastWord = textBefore.split(' ').pop()
 
