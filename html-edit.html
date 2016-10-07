@@ -303,9 +303,17 @@ Polymer({
           tag.move = [("<" + tag.tag).length, ("<" + tag.tag).length]
         }
         if (this.filter.length > 0) {
-          TextEvent(t, t.selectionStart - ("<" + this.filter).length, t.selectionStart, tag.code, tag.move)
+          function typeLetter(target, char) {
+            target.focus()
+            document.execCommand("insertText", false, char)
+          }
+
+          typeLetter(t, tag.code)
+          // https://bugs.chromium.org/p/chromium/issues/detail?id=630268
+          // TextEvent(t, t.selectionStart - ("<" + this.filter).length, t.selectionStart, tag.code, tag.move)
         } else {
-          TextEvent(t, t.selectionStart, t.selectionStart, tag.code, tag.move)
+          typeLetter(t, tag.code)
+          // TextEvent(t, t.selectionStart, t.selectionStart, tag.code, tag.move)
         }
       }
     }
