@@ -8,6 +8,7 @@
   ],
   "dependencies": {
     "polymer": "*",
+    "CodeMirror": "codemirror/CodeMirror#^5.22.0",
     "lunr-js": "marcus7777/lunr-js"
   }
 }
