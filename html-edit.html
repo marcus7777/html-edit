@@ -17,10 +17,15 @@
 
 <dom-module id="html-edit">
   <template>
+    <style>
+      .CodeMirror {
+        width: 100%;
+      }
+    </style>
     <lunr-js limit="1000" no-stop-words data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
       <label for="htmlbox">{{label}}</label><br>
-      <textarea id="htmlbox" title="<search att" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey" value="{{value::input}}"></textarea>
+      <textarea id="htmlbox" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey"></textarea>
       <template is="dom-if" if="{{filter}}">
         <select on-blur="addTag" multiple id="tag">
           <template is="dom-repeat" items="{{ac}}">
@@ -156,7 +161,10 @@ Polymer({
     },
     theLink: {
       computed: "getLink(filter,tags)", value:""
-    }
+    },
+    codeMirrorEditor: {
+      computed: "getEditor(value)"
+    },
   },
   getTag: function(tagName) {
     var theTag
@@ -328,14 +336,34 @@ Polymer({
   takekey: function (e) {
     this.debounce('updateFilter', this.updateFilter, 500)
     this.set("ac", true)
-  }
-})
-var mixedMode = {
-  name: "htmlmixed",
-  scriptTypes: [{matches: /\/x-handlebars-template|\/x-mustache/i, mode: null}]
-}
-var editor = CodeMirror.fromTextArea(document.getElementById("htmlbox"), {
-  mode: mixedMode,
-  selectionPointer: true
+  },
+  getEditor: function(value) {
+    if (!this.$$("#htmlbox").value) {
+      var that = this
+      var mixedMode = {
+        name: "htmlmixed",
+        scriptTypes: [{matches: /\/x-handlebars-template|\/x-mustache/i, mode: null}]
+      }
+      this.$$("#htmlbox").value = value
+      cMEditor = CodeMirror.fromTextArea(this.$$("#htmlbox"), {
+        mode: mixedMode,
+        selectionPointer: true,
+      })
+
+      cMEditor.on("change", function (cm) {
+        that.value = cm.getValue();
+      })
+
+    }
+  },
+  fixTabs: function(cMEditor) {
+    return cMEditor.setOption("extraKeys", {
+      Tab: function(cm) {
+        var spaces = Array(cm.getOption("indentUnit") + 1).join(" ")
+        cm.replaceSelection(spaces)
+      }
+    })
+  },
+  
 })
 </script>
