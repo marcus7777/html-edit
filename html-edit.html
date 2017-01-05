@@ -1,6 +1,15 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../lunr-js/lunr-js.html">
 <link rel="import" href="html-help.html">
+
+<link rel="stylesheet" href="../CodeMirror/lib/codemirror.css">
+<script src="../CodeMirror/lib/codemirror.js"></script>
+<script src="../CodeMirror/addon/selection/selection-pointer.js"></script>
+<script src="../CodeMirror/mode/xml/xml.js"></script>
+<script src="../CodeMirror/mode/javascript/javascript.js"></script>
+<script src="../CodeMirror/mode/css/css.js"></script>
+<script src="../CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
+
 <!--
 `<html-edit value="{{html}}" label="Your Html"></html-edit>` help you edit html with all the elements from open-elements.org. 🌈
 @demo demo.html
@@ -320,5 +329,13 @@ Polymer({
     this.debounce('updateFilter', this.updateFilter, 500)
     this.set("ac", true)
   }
+})
+var mixedMode = {
+  name: "htmlmixed",
+  scriptTypes: [{matches: /\/x-handlebars-template|\/x-mustache/i, mode: null}]
+}
+var editor = CodeMirror.fromTextArea(document.getElementById("htmlbox"), {
+  mode: mixedMode,
+  selectionPointer: true
 })
 </script>
