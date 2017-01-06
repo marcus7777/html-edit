@@ -24,8 +24,6 @@
     </style>
     <lunr-js limit="1000" no-stop-words data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
-      <label for="htmlbox">{{label}}</label><br>
-      <textarea id="htmlbox" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey"></textarea>
       <template is="dom-if" if="{{filter}}">
         <select on-blur="addTag" multiple id="tag">
           <template is="dom-repeat" items="{{ac}}">
@@ -42,6 +40,8 @@
           </template>
         </select>
       </template>
+      <label for="htmlbox">{{label}}</label><br>
+      <textarea id="htmlbox" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey"></textarea>
     </div>
   </template>
 </dom-module>
@@ -212,12 +212,9 @@ Polymer({
     var re = /<([-\w]*)$/g
     // if writen <paper-input va
     var reGot = /<([\w-]*)[^>]*$/g
-
-    var t = this.$$('textarea')
-    var start = t.selectionStart
-    var end = t.selectionEnd
-    if (start === end) {
-      var textBefore = t.value.substring(0, start)
+    
+    if (this.chr) {
+      var textBefore = this.line.substring(0, this.chr)
       var mt
       var mtGot
       mt = re.exec(textBefore)
@@ -303,8 +300,7 @@ Polymer({
   addTag: function () {
     var e = this.$$('select#tag')
     var index = e.selectedIndex
-    var t = this.$$('textarea')
-    var textBefore = t.value.substring(0, t.selectionStart)
+    var textBefore = this.line.substring(0, this.chr) 
     var lastWord = textBefore.split(' ').pop()
 
     if (index !== -1) {
@@ -321,15 +317,7 @@ Polymer({
         if (!tag.move) {
           tag.move = [("<" + tag.tag).length, ("<" + tag.tag).length]
         }
-        if (this.filter.length > 0) {
-
-
-          // typeLetter(t, tag.code)
-          TextEvent(t, t.selectionStart - ("<" + this.filter).length, t.selectionStart, tag.code, tag.move)
-        } else {
-          //typeLetter(t, tag.code)
-          TextEvent(t, t.selectionStart, t.selectionStart, tag.code, tag.move)
-        }
+        this.addingTag = tag
       }
     }
   },
@@ -338,31 +326,69 @@ Polymer({
     this.set("ac", true)
   },
   getEditor: function(value) {
+    if (!this.noloop && this.cMEditor && value != this.cMEditor.getValue()) {
+      this.cMEditor.doc.setValue(value)
+    }
     if (!this.$$("#htmlbox").value) {
       var that = this
       var mixedMode = {
         name: "htmlmixed",
         scriptTypes: [{matches: /\/x-handlebars-template|\/x-mustache/i, mode: null}]
       }
+
       this.$$("#htmlbox").value = value
-      cMEditor = CodeMirror.fromTextArea(this.$$("#htmlbox"), {
+
+      this.cMEditor = CodeMirror.fromTextArea(this.$$("#htmlbox"), {
         mode: mixedMode,
         selectionPointer: true,
       })
 
-      cMEditor.on("change", function (cm) {
-        that.value = cm.getValue();
+      this.cMEditor.on("blur", function (cm) {
+        that.updateFilter()
       })
 
+      this.cMEditor.on("focus", function (cm) {
+        if (that.addingTag) {
+          if (that.filter) { 
+            var selectTo = {line: cm.doc.getCursor().line, ch: cm.doc.getCursor().ch - +("<"+that.filter).length}
+            cm.doc.setSelection(cm.doc.getCursor(), selectTo)
+            cm.doc.replaceSelection(that.addingTag.code)
+          }
+        }   
+      })
+
+      this.cMEditor.on("change", function (cm) {
+        that.noloop = true
+        that.value = cm.getValue()
+        that.noloop = false
+        that.takekey()
+        that.line = cm.doc.getLine(cm.doc.getCursor().line)
+        that.chr = cm.doc.getCursor().ch
+      })
+
+      this.cMEditor.setOption("extraKeys", {
+        Tab: function(cm) {
+          var spaces = Array(cm.getOption("indentUnit") + 1).join(" ")
+          that.line = cm.doc.getLine(cm.doc.getCursor().line)
+          that.chr = cm.doc.getCursor().ch
+          that.updateFilter()
+          var ac = that.$$('select')
+          if (that.filter && ac) {
+            ac.focus()
+            if (ac.selectedIndex === -1) {
+              ac.selectedIndex = 0
+            }
+          } else {
+            cm.replaceSelection(spaces)
+          }
+        }
+      })
+      setTimeout(function() {
+        that.cMEditor.refresh()
+      },1000)
+
     }
-  },
-  fixTabs: function(cMEditor) {
-    return cMEditor.setOption("extraKeys", {
-      Tab: function(cm) {
-        var spaces = Array(cm.getOption("indentUnit") + 1).join(" ")
-        cm.replaceSelection(spaces)
-      }
-    })
+    return this.cMEditor
   },
   
 })
