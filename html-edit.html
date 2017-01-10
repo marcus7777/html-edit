@@ -22,28 +22,30 @@
         width: 100%;
       }
     </style>
-    <lunr-js limit="1000" no-stop-words data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
     <div>
-      <template is="dom-if" if="{{filter}}">
-        <select on-blur="addTag" multiple id="tag">
-          <template is="dom-repeat" items="{{ac}}">
-            <option value="{{item.tag}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
-          </template>
-        </select>
-      </template> 
-      <template is="dom-if" if="{{theLink}}" restamp>
-        <html-help src="{{theLink}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
-        <lunr-js limit="100" fields='["attr","desc"]' no-stop-words data="{{acAttr}}" search="{{filterAttr}}" output="{{attrList}}"></lunr-js>
-        <select on-blur="addAttr" multiple id="attr">
-          <template is="dom-repeat" items="{{attrList}}">
-            <option value="{{item.attr}}" title="{{item.desc}}">{{item.attr}}</option>
-          </template>
-        </select>
+      <template is="dom-if" if="{{!small}}">
+        <lunr-js limit="1000" no-stop-words data="{{suggestedTags}}" search="{{filter}}" output="{{ac}}"></lunr-js>
+        <template is="dom-if" if="{{filter}}">
+          <select on-blur="addTag" multiple id="tag">
+            <template is="dom-repeat" items="{{ac}}">
+              <option value="{{item.tag}}" title="{{item.code}}" move="{{item.move}}">{{item.tag}}</option>
+            </template>
+          </select>
+        </template> 
+        <template is="dom-if" if="{{theLink}}" restamp>
+          <html-help src="{{theLink}}" docs="{{docs}}" attr="{{acAttr}}" ></html-help>
+          <lunr-js limit="100" fields='["attr","desc"]' no-stop-words data="{{acAttr}}" search="{{filterAttr}}" output="{{attrList}}"></lunr-js>
+          <select on-blur="addAttr" multiple id="attr">
+            <template is="dom-repeat" items="{{attrList}}">
+              <option value="{{item.attr}}" title="{{item.desc}}">{{item.attr}}</option>
+            </template>
+          </select>
+        </template>
+        <label for="htmlbox">{{label}}</label><br>
       </template>
-      <label for="htmlbox">{{label}}</label><br>
       <textarea id="htmlbox" rows="9" style="width:100%" on-blur="updateFilter" on-keypress="takekey"></textarea>
     </div>
-  </template>
+  </template> 
 </dom-module>
 <script>
 // find a tag without code add a useful code sniplets please.
@@ -143,6 +145,7 @@ Polymer({
     value: {type: String, notify: true},
     label: String,
     code: {type: Boolean, value: false},
+    small: {type:Boolean, value: false},
     suggestedTags: {computed: '_getSuggestedTags(tags)'},
     filter: {value: ''},
     /*  `tags` is a Array of Objects
