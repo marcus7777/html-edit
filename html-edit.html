@@ -349,10 +349,11 @@ Polymer({
 
       this.cMEditor.on("focus", function (cm) {
         if (that.addingTag) {
-          if (that.filter) { 
+          if (that.filter && that.addingTag && that.addingTag.hasOwnProperty("code")) { 
             var selectTo = {line: cm.doc.getCursor().line, ch: cm.doc.getCursor().ch - +("<"+that.filter).length}
             cm.doc.setSelection(cm.doc.getCursor(), selectTo)
             cm.doc.replaceSelection(that.addingTag.code)
+            delete(that.addingTag.code)
           }
         }   
       })
@@ -373,6 +374,7 @@ Polymer({
           that.chr = cm.doc.getCursor().ch
           that.updateFilter()
           var ac = that.$$('select')
+          // test that.addingTag.move
           if (that.filter && ac) {
             ac.focus()
             if (ac.selectedIndex === -1) {
