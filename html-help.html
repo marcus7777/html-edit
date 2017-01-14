@@ -1,5 +1,4 @@
-<link rel="import" href="../hydrolysis/hydrolysis-analyzer.html">
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
 <!--
 `<html-help></html-help>` paper-input
 @demo demo.html
@@ -7,7 +6,7 @@
 
 <dom-module id="html-help">
   <template>
-    <hydrolysis-analyzer src="{{src}}" analyzer="{{output}}"></hydrolysis-analyzer>
+    <iron-ajax url="{{src}}" last-response="{{html}}"></iron-ajax>
   </template>
 </dom-module>
 <script>
@@ -17,14 +16,14 @@ Polymer({
     src: String,
     attr: {
       notify: true,
-      computed:"getAttr(theElement.properties, theElement.behaviors, output.behaviors)"
+      computed:"getAttr(theElement, theElement, output)"
     },
     docs: {
       notify: true,
       computed:"getDocs(theElement.desc)"
     },
     theElement: {
-      computed: "getElement(output.elements, src)"
+      computed: "getElement(html, src)"
     }
   },
   getAttr: function(properties, theElementBehaviors ,allBehaviors) {if (properties) {
@@ -34,12 +33,12 @@ Polymer({
   getDocs: function(docs) {if (docs) {
     return docs      
   }},
-  getElement: function(elements, src) {if (elements && src) {
-    for (var index = 0; index < elements.length; ++index) {
-      if (-1 !== elements[index].contentHref.indexOf(src)) {
-        return elements[index]
-      }
-    }
+  getElement: function(html, src) {if (elements && src) {
+    // test for 
+    //   Dom module tag
+    //   script tag
+    //   example code in the comments
+    
   }},
   addAttrs: function(properties) {
     for (var index = 0; index < properties.length; ++index) {
