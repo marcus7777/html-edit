@@ -390,7 +390,10 @@ Polymer({
     return this.cMEditor
   },
   attached: function() {
-    this.getEditor(this.value)
+    var that = this
+    setTimeout(function() {
+      that.getEditor(that.value)
+    },4000)
   }
 })
 </script>
