@@ -161,9 +161,6 @@ Polymer({
     theLink: {
       computed: "getLink(filter,tags)", value:""
     },
-    codeMirrorEditor: {
-      computed: "getEditor(value)"
-    },
   },
   getTag: function(tagName) {
     var theTag
@@ -392,6 +389,8 @@ Polymer({
     }
     return this.cMEditor
   },
-  
+  attached: function() {
+    this.getEditor(this.value)
+  }
 })
 </script>
