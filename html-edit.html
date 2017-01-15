@@ -392,7 +392,7 @@ Polymer({
   attached: function() {
     var that = this
     setTimeout(function() {
-      that.getEditor(that.value)
+      that.getEditor(that.value || "")
     },4000)
   }
 })
